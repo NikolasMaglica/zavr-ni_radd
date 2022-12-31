@@ -1,0 +1,48 @@
+
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj materijal na narudžbu na ponudu</h1>
+  
+  
+   <form
+   form #form="ngForm"
+    (ngSubmit)=" updateOrder_Material(addOrder_MaterialRequest.id)">
+       
+      <div class="form-group">
+        <label for="orderid">Order Id</label>
+          
+        <select class="form-control" name="orderid" id="orderid" [(ngModel)]="addOrder_MaterialRequest.orderid" *ngIf="addOrder_MaterialRequest.orderid!=''">
+          <option *ngFor="let type of Order$|async" [value]="type.id">{{type.id}}</option>
+        </select>
+
+        
+    
+
+      </div> 
+      <div class="form-group">
+        <label for="materialid">Material Id</label>
+          
+        <select class="form-control" name="materialid" id="materialid" [(ngModel)]="addOrder_MaterialRequest.materialid" *ngIf="addOrder_MaterialRequest.materialid!=''">
+          <option *ngFor="let type of Material$|async" [value]="type.id">{{type.id}}</option>
+        </select>
+    </div>
+      <div class="form-group">
+        <label for="quantity">Količina</label>
+        <input type="text" class="form-control" id="quantity" aria-describedby="emailHelp" placeholder="Unesi količinu" 
+        required name=quantity [(ngModel)]="addOrder_MaterialRequest.quantity" #quantity="ngModel">   
+        
+    </div>
+    <div class="form-group">
+      <label for="order_statusid">Status</label>
+   
+      <select class="form-control" name="order_statusid" id="order_statusid" [(ngModel)]="addOrder_MaterialRequest.order_statusid" *ngIf="addOrder_MaterialRequest.order_statusid!=''">
+        <option *ngFor="let type of Order_Status$|async" [value]="type.id">{{type.status}}</option>
+      </select>
+  </div>
+      
+     
+  
+    
+       <button type="submit" class="btn btn-primary" >Spremi</button>
+  
+
+  

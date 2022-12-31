@@ -1,0 +1,80 @@
+  <div
+    class="authentication-card-container"
+    fxLayout="column"
+    fxLayoutAlign="center"
+  >
+    <mat-card class="authentication-card">
+      <mat-card-header>
+        <mat-card-title>Registriraj se</mat-card-title>
+      </mat-card-header
+      >
+      <mat-card-content>
+        <form
+          [formGroup]="registerForm"
+          fxLayout="column"
+          fxLayoutAlign="center stretch"
+        >
+          <mat-form-field>
+            <mat-label>Korisničko ime</mat-label>
+            <input
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="username"
+            />
+            <mat-error
+              *ngIf="registerForm.controls['username'].hasError('required')"
+            >
+              Korisničko ime je<strong> obavezno</strong>
+            </mat-error>
+            <mat-error
+              *ngIf="registerForm.controls['username'].hasError('minlength')"
+            >
+              Korisničko ime mora imati<strong>više od 5 znamenki</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              [errorStateMatcher]="matcher"
+              type="email"
+              formControlName="email"
+            />
+            <mat-error
+              *ngIf="registerForm.controls['email'].hasError('required')"
+            >
+              Email je <strong>obavezan</strong>
+            </mat-error>
+            <mat-error *ngIf="registerForm.controls['email'].hasError('email')">
+              Email mora biti u <strong>ispravnom formatu</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Lozinka</mat-label>
+            <input
+              matInput
+              [errorStateMatcher]="matcher"
+              type="password"
+              formControlName="password"
+            />
+            <mat-error
+              *ngIf="registerForm.controls['password'].hasError('password')"
+              >
+              Lozinka mora imati
+              <strong
+              >Više od 6 znamenki, najmanje 1 veliko i 1 malo slovo, najmanje jedan posebni znak</strong
+              >
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="onSubmit()">
+          Registriraj se
+        </button>
+        <button mat-button routerLink="/login" routerLinkActive="active">
+         Imaš račun ? Prijavi se ovdje.
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>

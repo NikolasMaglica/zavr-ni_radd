@@ -1,0 +1,31 @@
+
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj novu ponudu</h1>
+  
+  
+   <form
+   form #form="ngForm"
+    (ngSubmit)="addVehicleType()">
+        
+      
+      <div class="form-group">
+        <label for="vehicle_typename">Naziv vrste vozila</label>
+        <input type="text" class="form-control" id="vehicle_typename" aria-describedby="emailHelp" placeholder="Unesi naziv vrste vozila" 
+        required name=vehicle_typename [(ngModel)]="addVehicle_TypeRequest.vehicle_typename" #vehicle_typename="ngModel">   
+        <div *ngIf="vehicle_typename.invalid && (vehicle_typename.dirty || vehicle_typename.touched)"
+       >
+    
+      <div *ngIf="vehicle_typename.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos vrste vozila je <strong>obavezan</strong>.
+      </div>
+      
+
+      </div> 
+     
+        
+    
+       <button type="submit" class="btn btn-primary">Spremi</button>
+  
+
+  
+  </div>

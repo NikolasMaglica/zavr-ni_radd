@@ -1,0 +1,82 @@
+
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj novo vozilo</h1>
+  
+  
+   <form
+   form #form="ngForm"
+    (ngSubmit)="addVehicle()">
+        
+      
+      <div class="form-group">
+        <label for="manufacturer">Proizvođač</label>
+        <input type="text" class="form-control" id="manufacturer" aria-describedby="emailHelp" placeholder="Unesi proizvođača" 
+        required name=price [(ngModel)]="addVehicleRequest.manufacturer" #manufacturer="ngModel">   
+        <div *ngIf="manufacturer.invalid && (manufacturer.dirty || manufacturer.touched)"
+       >
+    
+      <div *ngIf="manufacturer.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos proizvođača je <strong>obavezan</strong>.
+      </div>
+      </div> 
+
+       
+      <div class="form-group">
+        <label for="model">Model vozila</label>
+        <input type="text" class="form-control" id="model" aria-describedby="emailHelp" placeholder="Unesi model vozila" 
+        required name=model [(ngModel)]="addVehicleRequest.model" #model="ngModel">   
+        <div *ngIf="model.invalid && (model.dirty || model.touched)"
+       >
+    
+      <div *ngIf="manufacturer.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos modela vozila je <strong>obavezan</strong>.
+      </div>
+      </div> 
+      
+
+      
+      <div class="form-group">
+        <label for="productionyear">Godina proizvodnje</label>
+        <input type="text" class="form-control" id="productionyear" aria-describedby="emailHelp" placeholder="Unesi godinu proizvodnje" 
+        required name=productionyear [(ngModel)]="addVehicleRequest.productionyear" #productionyear="ngModel">   
+        <div *ngIf="productionyear.invalid && (productionyear.dirty || productionyear.touched)"
+       >
+    
+      <div *ngIf="productionyear.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos godine proizvodnje je <strong>obavezan</strong>.
+      </div>
+      </div> 
+
+      <div class="form-group">
+        <label for="kilometerstraveled">Broj prijeđenih kilometara</label>
+        <input type="text" class="form-control" id="kilometerstraveled" aria-describedby="emailHelp" placeholder="Unesi broj prijeđenih kilometara" 
+        required name=kilometerstraveled [(ngModel)]="addVehicleRequest.kilometerstraveled" #kilometerstraveled="ngModel">   
+        <div *ngIf="kilometerstraveled.invalid && (kilometerstraveled.dirty || kilometerstraveled.touched)"
+       >
+    
+      <div *ngIf="productionyear.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos broja prijeđenih kilometara je <strong>obavezan</strong>.
+      </div>
+      </div> 
+      
+
+      <div class="form-group">
+        <label for="vehicle_typeid">Vrsta vozila</label>
+        <input type="text" class="form-control" name="vehicle_typeid"  [(ngModel)]="addVehicleRequest.vehicle_typeid" *ngIf="addVehicleRequest.vehicle_typeid!=''" >
+        <select class="form-control" name="vehicle_typeid" id="vehicle_typeid" [(ngModel)]="addVehicleRequest.vehicle_typeid" *ngIf="addVehicleRequest.vehicle_typeid==''">
+          <option *ngFor="let type of Vehicle_TypeId$|async" [value]="type.id">{{type.vehicle_typename}}</option>
+        </select>
+        
+      </div>
+       <div class="form-group">
+        <label for="clientid">Klijent</label>
+        <input type="text" class="form-control" name="clientid"  [(ngModel)]="addVehicleRequest.clientid" *ngIf="addVehicleRequest.clientid!=''" >
+        <select class="form-control" name="clientid" id="clientid" [(ngModel)]="addVehicleRequest.clientid" *ngIf="addVehicleRequest.clientid==''">
+          <option *ngFor="let type of ClientId$|async" [value]="type.id">{{type.firstlastname}}</option>
+        </select>
+        
+      </div>
+       <button type="submit" class="btn btn-primary">Spremi</button>
+  
+
+  </div>

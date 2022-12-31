@@ -1,0 +1,51 @@
+<div class="authentication-card-container">
+    <h1 class="mb-3">Uredi ponudu</h1>
+  
+  <div class="row">
+    <div class="col-6">
+  
+   <form #form="ngForm" (ngSubmit)="updateOffer(OfferDetails.id)">
+    <div class="form-group">
+      <label for="id" class="form-label">ID</label>
+      <input type="text" class="form-control" id="id" aria-label="Disabled input example" disabled  aria-describedby="emailHelp" 
+      name=id [(ngModel)]="OfferDetails.id">
+    </div> 
+       <div class="form-group">
+         <label for="price">Cijena</label>
+         <input type="text" class="form-control" id="price" aria-describedby="emailHelp" placeholder="Unesi ime" 
+         name=price [(ngModel)]="OfferDetails.price">
+       </div>       
+       
+          
+     
+      <div class="form-group">
+       <label for="userid">Korisnik</label>
+       <select class="form-control" name="userid" id="userid" [(ngModel)]="OfferDetails.userid" *ngIf="OfferDetails.userid!=''">
+         <option *ngFor="let type of UserTypesId$|async" [value]="type.id">{{type.userName}}</option>
+       </select>
+     </div>
+      
+    <div class="form-group">
+      <label for="vehicleid">Vozilo</label>
+      <select class="form-control" name="vehicleid" id="vehicleid" [(ngModel)]="OfferDetails.vehicleid" *ngIf="OfferDetails.vehicleid!=''">
+        <option *ngFor="let type of VehicleTypesId$|async" [value]="type.id">{{type.model}}</option>
+      </select>
+      
+    </div>
+    <div class="form-group">
+      <label for="clientid">Klijent</label>
+      <select class="form-control" name="clientid" id="clientid" [(ngModel)]="OfferDetails.clientid" *ngIf="OfferDetails.clientid!=''">
+        <option *ngFor="let type of ClientTypesId$|async" [value]="type.id">{{type.firstlastname}}</option>
+      </select>
+      
+    </div>
+
+
+       <button type="submit" class="btn btn-primary">Spremi</button>
+  
+  
+      </form>
+    </div>
+  
+  </div>
+  </div>

@@ -1,0 +1,62 @@
+
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj novu ponudu</h1>
+  
+  
+   <form
+   form #form="ngForm"
+    (ngSubmit)="addOffer()">
+        
+      
+      <div class="form-group">
+        <label for="price">Cijena</label>
+        <input type="text" class="form-control" id="price" aria-describedby="emailHelp" placeholder="Unesi cijenu" 
+        required name=price [(ngModel)]="addOfferRequest.price" #price="ngModel" pattern="^[0-9.a]*$">   
+        <div *ngIf="price.invalid && (price.dirty || price.touched)"
+       >
+    
+      <div *ngIf="price.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos cijene je <strong>obavezan</strong>.
+      </div>
+       <div *ngIf="price.errors?.['pattern']" class="alert alert-primary" role="alert">
+        Mozete unijeti samo <strong>brojeve</strong>.
+      </div>
+
+      </div> 
+      <div class="form-group">
+        <label for="userid">Korisnik</label>
+        <input type="text" class="form-control" name="userid"  [(ngModel)]="addOfferRequest.userid" *ngIf="addOfferRequest.userid!=''" >
+        <select class="form-control" name="userid" id="userid" [(ngModel)]="addOfferRequest.userid" *ngIf="addOfferRequest.userid==''">
+          <option *ngFor="let type of UserTypesId$|async" [value]="type.id">{{type.userName}}</option>
+        </select>
+        
+      </div>
+      <div class="form-group">
+        <label for="vehicleid">Vozilo</label>
+        <input type="text" class="form-control" name="vehicleid"  [(ngModel)]="addOfferRequest.vehicleid" *ngIf="addOfferRequest.vehicleid!=''" >
+        <select class="form-control" name="vehicleid" id="vehicleid" [(ngModel)]="addOfferRequest.vehicleid" *ngIf="addOfferRequest.vehicleid==''">
+          <option *ngFor="let type of VehicleTypesId$|async" [value]="type.id">{{type.model}}</option>
+        </select>
+        
+      </div>
+      <div class="form-group">
+        <label for="clientid">Klijent</label>
+        <input type="text" class="form-control" name="clientid"  [(ngModel)]="addOfferRequest.clientid" *ngIf="addOfferRequest.clientid!=''" >
+        <select class="form-control" name="clientid" id="clientid" [(ngModel)]="addOfferRequest.clientid" *ngIf="addOfferRequest.clientid==''">
+          <option *ngFor="let type of ClientTypesId$|async" [value]="type.id">{{type.firstlastname}}</option>
+        </select>
+        
+      </div>
+      <div class="form-group">
+        <label for="offer_statusid">Klijent</label>
+        <input type="text" class="form-control" name="offer_statusid"  [(ngModel)]="addOfferRequest.offer_statusid" *ngIf="addOfferRequest.offer_statusid!=''" >
+        <select class="form-control" name="offer_statusid" id="offer_statusid" [(ngModel)]="addOfferRequest.offer_statusid" *ngIf="addOfferRequest.offer_statusid==''">
+          <option *ngFor="let type of Offer_StatusTypesid$|async" [value]="type.id">{{type.name}}</option>
+        </select>
+        
+      </div>
+       <button type="submit" class="btn btn-primary">Spremi</button>
+  
+
+  
+  </div>

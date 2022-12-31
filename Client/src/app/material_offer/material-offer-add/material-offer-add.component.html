@@ -1,0 +1,57 @@
+
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj materijal na ponudu ponudu</h1>
+  
+  
+   <form
+   form #form="ngForm"
+    (ngSubmit)=" addSMaterial_OfferType()">
+        
+      
+    <div class="form-group">
+      <label for="offerid">Offer id</label>
+      <input type="text" class="form-control" id="offerid" aria-describedby="emailHelp" placeholder="Unesi ponudu" 
+      required name=offerid [(ngModel)]="addMaterial_OfferRequest.offerid" *ngIf="addMaterial_OfferRequest.offerid!=''" #serviceid="ngModel">   
+      <select class="form-control" name="offerid" id="offerid" [(ngModel)]="addMaterial_OfferRequest.offerid" *ngIf="addMaterial_OfferRequest.offerid==''">
+        <option *ngFor="let type of Offer$|async" [value]="type.id">{{type.id}}</option>
+      </select>
+      
+
+      </div> 
+
+      <div class="form-group">
+        <label for="materialid">Material id</label>
+        <input type="text" class="form-control" id="materialid" aria-describedby="emailHelp" placeholder="Unesi materijal" 
+        required name=materialid [(ngModel)]="addMaterial_OfferRequest.materialid" *ngIf="addMaterial_OfferRequest.materialid!=''">   
+        <select class="form-control" name="materialid" id="materialid" [(ngModel)]="addMaterial_OfferRequest.materialid" *ngIf="addMaterial_OfferRequest.materialid==''">
+          <option *ngFor="let type of Material$|async" [value]="type.id">{{type.name}}</option>
+        </select>
+        
+  
+        </div>
+
+      <div class="form-group">
+        <label for="quantity">Količina</label>
+        <input type="text" class="form-control" id="quantity" aria-describedby="emailHelp" placeholder="Unesi količinu" 
+        required name=quantity [(ngModel)]="addMaterial_OfferRequest.quantity" #quantity="ngModel">   
+        <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)"
+       >
+    
+      <div *ngIf="quantity.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos količine usluge na ponudu <strong>obavezan</strong>.
+      </div>
+    </div>
+
+      <div class="form-group">
+        <label for="discount">Popust</label>
+        <input type="text" class="form-control" id="discount" aria-describedby="emailHelp" placeholder="Unesi opis" 
+         name=discount [(ngModel)]="addMaterial_OfferRequest.discount" >   
+       </div>
+     
+        
+    
+       <button type="submit" class="btn btn-primary" >Spremi</button>
+  
+
+  
+  </div>

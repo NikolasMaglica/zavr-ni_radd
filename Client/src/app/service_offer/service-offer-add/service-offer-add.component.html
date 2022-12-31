@@ -1,0 +1,49 @@
+
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj nou uslugu na ponudu</h1>
+  
+  
+   <form
+   form #form="ngForm"
+    (ngSubmit)=" addService_OfferType()">
+        
+      
+      <div class="form-group">
+        <label for="serviceid">Offer id</label>
+        <input type="text" class="form-control" id="offerid" aria-describedby="emailHelp" placeholder="Unesi ponudu" 
+        required name=offerid [(ngModel)]="addService_OfferRequest.offerid" *ngIf="addService_OfferRequest.offerid!=''" #serviceid="ngModel">   
+        <select class="form-control" name="offerid" id="offerid" [(ngModel)]="addService_OfferRequest.offerid" *ngIf="addService_OfferRequest.offerid==''">
+          <option *ngFor="let type of Offer$|async" [value]="type.id">{{type.id}}</option>
+        </select>
+
+      </div> 
+      <div class="form-group">
+        <label for="serviceid">Usluga id</label>
+        <input type="text" class="form-control" id="serviceid" aria-describedby="emailHelp" placeholder="Unesi uslugu" 
+        required name=serviceid [(ngModel)]="addService_OfferRequest.serviceid" *ngIf="addService_OfferRequest.serviceid!=''" #serviceid="ngModel">   
+        <select class="form-control" name="serviceid" id="serviceid" [(ngModel)]="addService_OfferRequest.serviceid" *ngIf="addService_OfferRequest.serviceid==''">
+          <option *ngFor="let type of Service$|async" [value]="type.id">{{type.name}}</option>
+        </select>
+
+      
+      </div> 
+
+      <div class="form-group">
+        <label for="quantity">Količina</label>
+        <input type="text" class="form-control" id="quantity" aria-describedby="emailHelp" placeholder="Unesi količinu" 
+        required name=quantity [(ngModel)]="addService_OfferRequest.quantity" #quantity="ngModel">   
+       
+
+      <div class="form-group">
+        <label for="discount">Popust</label>
+        <input type="text" class="form-control" id="discount" aria-describedby="emailHelp" placeholder="Unesi opis" 
+         name=discount [(ngModel)]="addService_OfferRequest.discount" >   
+       </div>
+     
+        
+    
+       <button type="submit" class="btn btn-primary" >Spremi</button>
+  
+
+  
+  </div>

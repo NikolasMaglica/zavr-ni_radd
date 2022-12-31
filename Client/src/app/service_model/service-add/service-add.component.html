@@ -1,0 +1,57 @@
+
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj novu uslugu</h1>
+  
+  
+   <form
+   form #form="ngForm"
+    (ngSubmit)="addServiceType()">
+        
+      
+      <div class="form-group col-5 my-4">
+        <label for="name">Naziv usluge</label>
+        <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Unesi naziv usluge" 
+        required name=name [(ngModel)]="addServiceRequest.name" #name="ngModel">   
+        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+       >
+    
+      <div *ngIf="name.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos naziva usluge je <strong>obavezan</strong>.
+      </div>
+      
+
+      </div> 
+      <div class="form-group  my-2">
+        <label for="price">Cijena usluge</label>
+        <input type="number" class="form-control" id="price" aria-describedby="emailHelp" placeholder="Unesi cijenu usluge" 
+        required name=price [(ngModel)]="addServiceRequest.price" #price="ngModel">   
+        <div *ngIf="price.invalid && (price.dirty || price.touched)"
+       >
+    
+      <div *ngIf="price.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos cijene usluge je <strong>obavezan</strong>.
+      </div>
+      
+
+      </div> 
+      <div class="form-group my-2">
+        <label for="description">Opis usluge</label>
+        <input type="description" class="form-control" id="description" aria-describedby="emailHelp" placeholder="Unesi cijenu usluge" 
+        required name=description [(ngModel)]="addServiceRequest.description" #description="ngModel">   
+        <div *ngIf="description.invalid && (description.dirty || description.touched)"
+       >
+    
+      <div *ngIf="description.errors?.['required']" class="alert alert-primary" role="alert text-wrap">
+        Unos naziva usluge je <strong>obavezan</strong>.
+      </div>
+      
+
+      </div> 
+     
+        
+    
+       <button type="submit" class="btn btn-primary mt-3" [disabled]="!form.valid">Spremi</button>
+  
+
+  
+  </div>
