@@ -13,7 +13,7 @@ namespace AuthenticationApi.Dtos
         public int instockquantity { get; set; }
         [Required]
 
-        public float price { get; set; }
+        public int price { get; set; }
         public string description { get; set; } = String.Empty;
 
     }

@@ -20,7 +20,6 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<Order> Order { get; set; }
     public DbSet<Order_Status> Order_status { get; set; }
     public DbSet<Offer_Status> Offer_status { get; set; }
-    public DbSet<Material_Offer> Material_offer { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -52,6 +51,12 @@ public class AppDbContext : IdentityDbContext<User>
         builder.Entity<Material>(e =>
         {
             e.HasMany(p => p.Orders)
+            .WithOne(p => p.material)
+            .HasForeignKey(p => p.materialid);
+        });
+        builder.Entity<Material>(e =>
+        {
+            e.HasMany(p => p.Offers)
             .WithOne(p => p.material)
             .HasForeignKey(p => p.materialid);
         });

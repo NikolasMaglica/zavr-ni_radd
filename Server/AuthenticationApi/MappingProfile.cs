@@ -23,8 +23,6 @@ namespace nikolas.Extensions
             CreateMap<Service_OfferUpdate, Service_Offer>();
             CreateMap<MaterialUpdate, Material>();
             CreateMap<MaterialCreation, Material>();
-            CreateMap<Material_OfferCreation, Material_Offer>();
-            CreateMap<Material_OfferUpdate, Material_Offer>();
             CreateMap<OrderCreation, Order>();
             CreateMap<OrderUpdate, Order>();
             CreateMap<Offer_StatusCreation, Offer_Status>();

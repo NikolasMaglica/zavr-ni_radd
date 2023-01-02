@@ -4,6 +4,8 @@ using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
 using AuthenticationApi.Entities;
 using AutoMapper;
+using System.Data.Entity;
+using System.Diagnostics;
 
 namespace AuthenticationApi.Services
 {
@@ -18,11 +20,22 @@ namespace AuthenticationApi.Services
             _mapper = mapper;
         }
 
+
         public IEnumerable<Offer> GetAllOffers()
         {
-            return FindAll()
-                              .OrderBy(ow => ow.price)
-                              .ToList();
+            // Dohvati sve ponude i sortiraj ih po cijeni
+            var offers = FindAll().OrderBy(ow => ow.price).ToList();
+
+            // Dohvati materijale za svaku ponudu
+            foreach (var offer in offers)
+            {
+                var material = _appDbContext.Materials.Where(x => x.id == offer.materialid).FirstOrDefault();
+
+                // Ažuriraj totalPrice ponude s cijenom materijala
+                offer.totalPrice = offer.quantity * material.price;
+            }
+
+            return offers;
         }
 
         public void OfferCreate(OfferCreation model)
@@ -43,32 +56,46 @@ namespace AuthenticationApi.Services
 
         public void UpdateOffer(int id, OfferUpdate model)
         {
-            var offer = _appdbcontext.Offers?.Find(id);
-            if (offer == null)
-                throw new KeyNotFoundException($"Ponuda s {id} nije pronađena u bazi podataka");
-            offer.price = model.price;
-            _mapper.Map(model, offer);
-            var materialOffer = _appDbContext.Material_offer!.Where(x => x.id == offer.id).FirstOrDefault();
+            {
 
-            if (offer.offer_statusid == 1 && materialOffer is not null)
-            {
-                var material = _appDbContext.Materials!.Where(x => x.id == materialOffer!.id).FirstOrDefault();
-                material!.instockquantity -= materialOffer!.quantity;
-                _appDbContext.Materials!.Update(material);
+                var update = _appDbContext.Offers?.Find(id);
+                if (update is null)
+                {
+                    throw new KeyNotFoundException("Ponuda nije pronađena u bazi podataka");
+
+                }
+                _mapper.Map(model, update);
+                var material = _appDbContext.Materials!.Where(x => x.id == update.materialid).FirstOrDefault();
+               
+                var offer = _appDbContext.Offers!.Where(x => x.materialid == material!.id).FirstOrDefault();
+                
+                if (update.offer_statusid == 1)
+                {
+                   
+                    material!.instockquantity += update!.quantity;
+                    _appDbContext.Offers.Update(update);
+                    _appDbContext.Materials!.Update(material!);
+
+
+
+                    _appDbContext.SaveChanges();
+                }
+                else
+                {
+                    _appDbContext.Offers.Update(update);
+
+
+
+                    _appDbContext.SaveChanges();
+                }
+
                 _appDbContext.SaveChanges();
-            }
-            if (materialOffer == null)
-            {
-                throw new KeyNotFoundException("Ponuda materijala nije pronadena u bazi podataka");
-            }
-            else
-            {
-                _appDbContext.Offers.Update(offer);
-                _appDbContext.SaveChanges();
+
+
+
+
             }
 
-            _appDbContext.SaveChanges();
-        }
     }
 }
-
+}

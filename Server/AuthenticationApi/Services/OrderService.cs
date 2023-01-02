@@ -50,11 +50,11 @@ namespace AuthenticationApi.Services
 
             }
             _mapper.Map(model, update);
-            var material = _appDbContext.Materials!.Where(x => x.id == update.id).FirstOrDefault();
-            var order = _appDbContext.Order!.Where(x => x.materialid == material!.id).AsNoTracking().FirstOrDefault();
-            if (order.order_statusid == 1)
+            var material = _appDbContext.Materials!.Where(x => x.id == update.materialid).FirstOrDefault();
+            var order = _appDbContext.Order!.Where(x => x.materialid == material!.id).FirstOrDefault();
+            if (update.order_statusid == 1)
             {
-                material!.instockquantity += order!.quantity;
+                material!.instockquantity += update!.quantity;
                 _appDbContext.Order.Update(update);
                 _appDbContext.Materials!.Update(material!);
                 _appDbContext.SaveChanges();

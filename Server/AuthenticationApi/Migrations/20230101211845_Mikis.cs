@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AuthenticationApi.Migrations
 {
-    public partial class nova_4321 : Migration
+    public partial class Mikis : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -72,7 +72,7 @@ namespace AuthenticationApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     instockquantity = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    price = table.Column<float>(type: "real", maxLength: 10, nullable: false),
+                    price = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
@@ -247,6 +247,7 @@ namespace AuthenticationApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     date = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
                     materialid = table.Column<int>(type: "int", nullable: false),
                     order_statusid = table.Column<int>(type: "int", nullable: false)
                 },
@@ -303,11 +304,14 @@ namespace AuthenticationApi.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    price = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    price = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
                     userid = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     clientid = table.Column<int>(type: "int", nullable: false),
                     vehicleid = table.Column<int>(type: "int", nullable: false),
-                    offer_statusid = table.Column<int>(type: "int", nullable: false)
+                    offer_statusid = table.Column<int>(type: "int", nullable: false),
+                    materialid = table.Column<int>(type: "int", nullable: false),
+                    totalPrice = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -322,6 +326,12 @@ namespace AuthenticationApi.Migrations
                         name: "FK_Offers_Clients_clientid",
                         column: x => x.clientid,
                         principalTable: "Clients",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Offers_Materials_materialid",
+                        column: x => x.materialid,
+                        principalTable: "Materials",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -359,34 +369,6 @@ namespace AuthenticationApi.Migrations
                         name: "FK_user_vehicles_Vehicles_vehicleid",
                         column: x => x.vehicleid,
                         principalTable: "Vehicles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Material_offer",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    materialid = table.Column<int>(type: "int", nullable: false),
-                    offerid = table.Column<int>(type: "int", nullable: false),
-                    quantity = table.Column<int>(type: "int", nullable: false),
-                    discount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Material_offer", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Material_offer_Materials_materialid",
-                        column: x => x.materialid,
-                        principalTable: "Materials",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Material_offer_Offers_offerid",
-                        column: x => x.offerid,
-                        principalTable: "Offers",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -459,19 +441,14 @@ namespace AuthenticationApi.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Material_offer_materialid",
-                table: "Material_offer",
-                column: "materialid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Material_offer_offerid",
-                table: "Material_offer",
-                column: "offerid");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Offers_clientid",
                 table: "Offers",
                 column: "clientid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Offers_materialid",
+                table: "Offers",
+                column: "materialid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Offers_offer_statusid",
@@ -542,9 +519,6 @@ namespace AuthenticationApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Material_offer");
-
-            migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
@@ -557,9 +531,6 @@ namespace AuthenticationApi.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Materials");
-
-            migrationBuilder.DropTable(
                 name: "Order_status");
 
             migrationBuilder.DropTable(
@@ -570,6 +541,9 @@ namespace AuthenticationApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Materials");
 
             migrationBuilder.DropTable(
                 name: "Offer_status");

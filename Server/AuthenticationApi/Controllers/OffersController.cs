@@ -3,6 +3,8 @@ using AuthenticationApi.Dtos;
 using AuthenticationApi.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace AuthenticationApi.Controllers
 {
@@ -48,9 +50,36 @@ namespace AuthenticationApi.Controllers
 
         public IActionResult GetOffer([FromRoute] int id)
         {
-            var offers = _appDbContext.Offers?.FirstOrDefault(x => x.id == id);
-            return Ok(offers);
+            var update = _appDbContext.Offers?.Find(id);
+            if (update == null)
+            {
+                throw new KeyNotFoundException("Ponuda nije pronađena u bazi podataka");
+            }
+
+            var material = _appDbContext.Materials.Where(x => x.id == update.materialid).FirstOrDefault();
+            if (material == null)
+            {
+                throw new KeyNotFoundException("Materijal nije pronađena u bazi podataka");
+            }
+
+            var offer = _appDbContext.Offers.Where(x => x.materialid == material.id).FirstOrDefault();
+            if (offer == null)
+            {
+                throw new KeyNotFoundException("Ponuda_m nije pronađena u bazi podataka");
+            }
+
+            offer.totalPrice = offer.quantity * material.price;
+
+            var serializerOptions = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            };
+
+            var serializedObject = JsonSerializer.Serialize(update, serializerOptions);
+            return Ok(serializedObject);
         }
+
+
         [HttpPut]
         [Route("{id:int}")]
         public IActionResult UpdateOffer(int id, [FromBody] OfferUpdate model)

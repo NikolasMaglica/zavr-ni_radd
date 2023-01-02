@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthenticationApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221231162247_nova_4321")]
-    partial class nova_4321
+    [Migration("20230101211845_Mikis")]
+    partial class Mikis
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,81 +78,13 @@ namespace AuthenticationApi.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<float>("price")
+                    b.Property<int>("price")
                         .HasMaxLength(10)
-                        .HasColumnType("real");
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
                     b.ToTable("Materials");
-                });
-
-            modelBuilder.Entity("AuthenticationApi.Entities.Material_Offer", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int>("discount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("materialid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("offerid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("materialid");
-
-                    b.HasIndex("offerid");
-
-                    b.ToTable("Material_offer");
-                });
-
-            modelBuilder.Entity("AuthenticationApi.Entities.Offer", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int>("clientid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("offer_statusid")
-                        .HasColumnType("int");
-
-                    b.Property<string>("price")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("userid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("vehicleid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("clientid");
-
-                    b.HasIndex("offer_statusid");
-
-                    b.HasIndex("userid");
-
-                    b.HasIndex("vehicleid");
-
-                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Entities.Offer_Status", b =>
@@ -189,6 +121,9 @@ namespace AuthenticationApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("order_statusid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("quantity")
                         .HasColumnType("int");
 
                     b.HasKey("id");
@@ -552,58 +487,53 @@ namespace AuthenticationApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AuthenticationApi.Entities.Material_Offer", b =>
+            modelBuilder.Entity("Offer", b =>
                 {
-                    b.HasOne("AuthenticationApi.Entities.Material", "material")
-                        .WithMany("material_offer")
-                        .HasForeignKey("materialid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.HasOne("AuthenticationApi.Entities.Offer", "offer")
-                        .WithMany("material_offer")
-                        .HasForeignKey("offerid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Navigation("material");
+                    b.Property<int>("clientid")
+                        .HasColumnType("int");
 
-                    b.Navigation("offer");
-                });
+                    b.Property<int>("materialid")
+                        .HasColumnType("int");
 
-            modelBuilder.Entity("AuthenticationApi.Entities.Offer", b =>
-                {
-                    b.HasOne("AuthenticationApi.Entities.Client", "client")
-                        .WithMany("Offers")
-                        .HasForeignKey("clientid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("offer_statusid")
+                        .HasColumnType("int");
 
-                    b.HasOne("AuthenticationApi.Entities.Offer_Status", "offer_status")
-                        .WithMany("Offers")
-                        .HasForeignKey("offer_statusid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("price")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
 
-                    b.HasOne("AuthenticationApi.Entities.User", "User")
-                        .WithMany("Offers")
-                        .HasForeignKey("userid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
 
-                    b.HasOne("AuthenticationApi.Entities.Vehicle", "vehicle")
-                        .WithMany("Offers")
-                        .HasForeignKey("vehicleid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("totalPrice")
+                        .HasColumnType("int");
 
-                    b.Navigation("User");
+                    b.Property<string>("userid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("client");
+                    b.Property<int>("vehicleid")
+                        .HasColumnType("int");
 
-                    b.Navigation("offer_status");
+                    b.HasKey("id");
 
-                    b.Navigation("vehicle");
+                    b.HasIndex("clientid");
+
+                    b.HasIndex("materialid");
+
+                    b.HasIndex("offer_statusid");
+
+                    b.HasIndex("userid");
+
+                    b.HasIndex("vehicleid");
+
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Entities.Order", b =>
@@ -627,7 +557,7 @@ namespace AuthenticationApi.Migrations
 
             modelBuilder.Entity("AuthenticationApi.Entities.Service_Offer", b =>
                 {
-                    b.HasOne("AuthenticationApi.Entities.Offer", "offer")
+                    b.HasOne("Offer", "offer")
                         .WithMany("service_offer")
                         .HasForeignKey("offerid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -733,6 +663,49 @@ namespace AuthenticationApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Offer", b =>
+                {
+                    b.HasOne("AuthenticationApi.Entities.Client", "client")
+                        .WithMany("Offers")
+                        .HasForeignKey("clientid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthenticationApi.Entities.Material", "material")
+                        .WithMany("Offers")
+                        .HasForeignKey("materialid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthenticationApi.Entities.Offer_Status", "offer_status")
+                        .WithMany("Offers")
+                        .HasForeignKey("offer_statusid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthenticationApi.Entities.User", "User")
+                        .WithMany("Offers")
+                        .HasForeignKey("userid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthenticationApi.Entities.Vehicle", "vehicle")
+                        .WithMany("Offers")
+                        .HasForeignKey("vehicleid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("client");
+
+                    b.Navigation("material");
+
+                    b.Navigation("offer_status");
+
+                    b.Navigation("vehicle");
+                });
+
             modelBuilder.Entity("AuthenticationApi.Entities.Client", b =>
                 {
                     b.Navigation("Offers");
@@ -742,16 +715,9 @@ namespace AuthenticationApi.Migrations
 
             modelBuilder.Entity("AuthenticationApi.Entities.Material", b =>
                 {
+                    b.Navigation("Offers");
+
                     b.Navigation("Orders");
-
-                    b.Navigation("material_offer");
-                });
-
-            modelBuilder.Entity("AuthenticationApi.Entities.Offer", b =>
-                {
-                    b.Navigation("material_offer");
-
-                    b.Navigation("service_offer");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Entities.Offer_Status", b =>
@@ -786,6 +752,11 @@ namespace AuthenticationApi.Migrations
             modelBuilder.Entity("AuthenticationApi.Entities.Vehicle_Type", b =>
                 {
                     b.Navigation("Vehicles");
+                });
+
+            modelBuilder.Entity("Offer", b =>
+                {
+                    b.Navigation("service_offer");
                 });
 #pragma warning restore 612, 618
         }

@@ -96,7 +96,6 @@ builder.Services.AddScoped<IService, ServiceService>();
 builder.Services.AddScoped<IService_Offer, Service_OfferService>();
 builder.Services.AddScoped<IMaterial, MaterialService>();
 builder.Services.AddScoped<IOrder, OrderService>();
-builder.Services.AddScoped<IMaterial_Offer, Material_OfferService>();
 
 
 
