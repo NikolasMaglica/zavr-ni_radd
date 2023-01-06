@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthenticationApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230101211845_Mikis")]
-    partial class Mikis
+    [Migration("20230105221701_ll")]
+    partial class ll
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -171,44 +171,13 @@ namespace AuthenticationApi.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<float>("price")
+                    b.Property<int>("price")
                         .HasMaxLength(20)
-                        .HasColumnType("real");
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
                     b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("AuthenticationApi.Entities.Service_Offer", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<float>("discount")
-                        .HasMaxLength(5)
-                        .HasColumnType("real");
-
-                    b.Property<int>("offerid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("quantity")
-                        .HasMaxLength(5)
-                        .HasColumnType("int");
-
-                    b.Property<int>("serviceid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("offerid");
-
-                    b.HasIndex("serviceid");
-
-                    b.ToTable("Service_offers");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Entities.User", b =>
@@ -278,21 +247,30 @@ namespace AuthenticationApi.Migrations
 
             modelBuilder.Entity("AuthenticationApi.Entities.User_Vehicle", b =>
                 {
-                    b.Property<string>("userid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("vehicleid")
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("userid", "vehicleid");
+                    b.Property<string>("userid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("vehicleid")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userid");
 
                     b.HasIndex("vehicleid");
 
-                    b.ToTable("user_vehicles");
+                    b.ToTable("User_Vehicle");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Entities.Vehicle", b =>
@@ -501,14 +479,16 @@ namespace AuthenticationApi.Migrations
                     b.Property<int>("materialid")
                         .HasColumnType("int");
 
+                    b.Property<int>("materialquantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("offer_statusid")
                         .HasColumnType("int");
 
-                    b.Property<int>("price")
-                        .HasMaxLength(10)
+                    b.Property<int>("serviceid")
                         .HasColumnType("int");
 
-                    b.Property<int>("quantity")
+                    b.Property<int>("servicequantity")
                         .HasColumnType("int");
 
                     b.Property<int>("totalPrice")
@@ -528,6 +508,8 @@ namespace AuthenticationApi.Migrations
                     b.HasIndex("materialid");
 
                     b.HasIndex("offer_statusid");
+
+                    b.HasIndex("serviceid");
 
                     b.HasIndex("userid");
 
@@ -553,25 +535,6 @@ namespace AuthenticationApi.Migrations
                     b.Navigation("material");
 
                     b.Navigation("order_status");
-                });
-
-            modelBuilder.Entity("AuthenticationApi.Entities.Service_Offer", b =>
-                {
-                    b.HasOne("Offer", "offer")
-                        .WithMany("service_offer")
-                        .HasForeignKey("offerid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AuthenticationApi.Entities.Service", "service")
-                        .WithMany("service_offer")
-                        .HasForeignKey("serviceid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("offer");
-
-                    b.Navigation("service");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Entities.User_Vehicle", b =>
@@ -683,6 +646,12 @@ namespace AuthenticationApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AuthenticationApi.Entities.Service", "service")
+                        .WithMany("Offers")
+                        .HasForeignKey("serviceid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AuthenticationApi.Entities.User", "User")
                         .WithMany("Offers")
                         .HasForeignKey("userid")
@@ -702,6 +671,8 @@ namespace AuthenticationApi.Migrations
                     b.Navigation("material");
 
                     b.Navigation("offer_status");
+
+                    b.Navigation("service");
 
                     b.Navigation("vehicle");
                 });
@@ -732,7 +703,7 @@ namespace AuthenticationApi.Migrations
 
             modelBuilder.Entity("AuthenticationApi.Entities.Service", b =>
                 {
-                    b.Navigation("service_offer");
+                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("AuthenticationApi.Entities.User", b =>
@@ -752,11 +723,6 @@ namespace AuthenticationApi.Migrations
             modelBuilder.Entity("AuthenticationApi.Entities.Vehicle_Type", b =>
                 {
                     b.Navigation("Vehicles");
-                });
-
-            modelBuilder.Entity("Offer", b =>
-                {
-                    b.Navigation("service_offer");
                 });
 #pragma warning restore 612, 618
         }

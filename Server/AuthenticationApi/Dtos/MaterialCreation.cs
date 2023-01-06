@@ -10,7 +10,7 @@ namespace AuthenticationApi.Dtos
         public string name { get; set; } = String.Empty;
         [Required]
 
-        public int instockquantity { get; set; }
+        public decimal instockquantity { get; set; }
         [Required]
 
         public int price { get; set; }

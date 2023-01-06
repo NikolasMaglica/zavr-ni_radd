@@ -14,7 +14,7 @@ namespace AuthenticationApi.Entities
         public int instockquantity { get; set; }
         [Required]
         [MaxLength(10)]
-        public int price { get; set; }
+        public decimal price { get; set; }
         [StringLength(200)]
 
         public string description { get; set; } = String.Empty;

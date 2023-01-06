@@ -103,6 +103,7 @@ import { MaterialOfferListComponent } from './material_offer/material-offer-list
     MatInputModule,
     MatSnackBarModule,
     
+    
    
   ],
   providers: [

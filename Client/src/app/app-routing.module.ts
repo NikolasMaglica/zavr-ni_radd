@@ -7,7 +7,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {AdminSecretPageComponent} from "./admin-secret-page/admin-secret-page.component";
 import {Role} from "./models/role.enum";
 import { OffersAddComponent } from './offers/offers-add/offers-add/offers-add.component';
-import { MenuComponent } from './menu/menu.component';
 import { OffersListsComponent } from './offers/offers-lists/offers-lists.component';
 import { EditOffersComponent } from './offers/offers-edit/edit-offers/edit-offers.component';
 import { VehicleTypeAddComponent } from './vehicle_type/vehicle-type-add/vehicle-type-add.component';
@@ -36,6 +35,7 @@ import { MaterialOfferEditComponent } from './material_offer/material-offer-edit
 import { MaterialOfferAddComponent } from './material_offer/material-offer-add/material-offer-add.component';
 import { MaterialOfferListComponent } from './material_offer/material-offer-list/material-offer-list.component';
 import { ServiceOfferEditComponent } from './service_offer/service-offer-edit/service-offer-edit.component';
+import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
   {

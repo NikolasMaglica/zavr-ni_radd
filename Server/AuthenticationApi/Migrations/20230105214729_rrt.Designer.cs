@@ -4,6 +4,7 @@ using AuthenticationApi.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthenticationApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230105214729_rrt")]
+    partial class rrt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,9 +78,9 @@ namespace AuthenticationApi.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<decimal>("price")
+                    b.Property<int>("price")
                         .HasMaxLength(10)
-                        .HasColumnType("decimal(18,3)");
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
@@ -169,9 +171,9 @@ namespace AuthenticationApi.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<decimal>("price")
+                    b.Property<int>("price")
                         .HasMaxLength(20)
-                        .HasColumnType("decimal(18,3)");
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
@@ -245,26 +247,23 @@ namespace AuthenticationApi.Migrations
 
             modelBuilder.Entity("AuthenticationApi.Entities.User_Vehicle", b =>
                 {
+                    b.Property<string>("userid")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("vehicleid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("userid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("vehicleid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("userid");
+                    b.HasKey("userid", "vehicleid");
 
                     b.HasIndex("vehicleid");
 
@@ -489,8 +488,8 @@ namespace AuthenticationApi.Migrations
                     b.Property<int>("servicequantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("totalPrice")
-                        .HasColumnType("decimal(18,3)");
+                    b.Property<int>("totalPrice")
+                        .HasColumnType("int");
 
                     b.Property<string>("userid")
                         .IsRequired()

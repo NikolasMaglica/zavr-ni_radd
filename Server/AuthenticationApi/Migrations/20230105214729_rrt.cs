@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AuthenticationApi.Migrations
 {
-    public partial class Mikis : Migration
+    public partial class rrt : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -113,7 +113,7 @@ namespace AuthenticationApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    price = table.Column<float>(type: "real", maxLength: 20, nullable: false),
+                    price = table.Column<int>(type: "int", maxLength: 20, nullable: false),
                     description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
@@ -304,13 +304,14 @@ namespace AuthenticationApi.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    price = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    quantity = table.Column<int>(type: "int", nullable: false),
+                    materialquantity = table.Column<int>(type: "int", nullable: false),
+                    servicequantity = table.Column<int>(type: "int", nullable: false),
                     userid = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     clientid = table.Column<int>(type: "int", nullable: false),
                     vehicleid = table.Column<int>(type: "int", nullable: false),
                     offer_statusid = table.Column<int>(type: "int", nullable: false),
                     materialid = table.Column<int>(type: "int", nullable: false),
+                    serviceid = table.Column<int>(type: "int", nullable: false),
                     totalPrice = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -341,6 +342,12 @@ namespace AuthenticationApi.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Offers_Services_serviceid",
+                        column: x => x.serviceid,
+                        principalTable: "Services",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Offers_Vehicles_vehicleid",
                         column: x => x.vehicleid,
                         principalTable: "Vehicles",
@@ -349,54 +356,28 @@ namespace AuthenticationApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_vehicles",
+                name: "User_Vehicle",
                 columns: table => new
                 {
                     userid = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     vehicleid = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_vehicles", x => new { x.userid, x.vehicleid });
+                    table.PrimaryKey("PK_User_Vehicle", x => new { x.userid, x.vehicleid });
                     table.ForeignKey(
-                        name: "FK_user_vehicles_AspNetUsers_userid",
+                        name: "FK_User_Vehicle_AspNetUsers_userid",
                         column: x => x.userid,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_user_vehicles_Vehicles_vehicleid",
+                        name: "FK_User_Vehicle_Vehicles_vehicleid",
                         column: x => x.vehicleid,
                         principalTable: "Vehicles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Service_offers",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    offerid = table.Column<int>(type: "int", nullable: false),
-                    serviceid = table.Column<int>(type: "int", nullable: false),
-                    quantity = table.Column<int>(type: "int", maxLength: 5, nullable: false),
-                    discount = table.Column<float>(type: "real", maxLength: 5, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Service_offers", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Service_offers_Offers_offerid",
-                        column: x => x.offerid,
-                        principalTable: "Offers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Service_offers_Services_serviceid",
-                        column: x => x.serviceid,
-                        principalTable: "Services",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -456,6 +437,11 @@ namespace AuthenticationApi.Migrations
                 column: "offer_statusid");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Offers_serviceid",
+                table: "Offers",
+                column: "serviceid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Offers_userid",
                 table: "Offers",
                 column: "userid");
@@ -476,18 +462,8 @@ namespace AuthenticationApi.Migrations
                 column: "order_statusid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Service_offers_offerid",
-                table: "Service_offers",
-                column: "offerid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Service_offers_serviceid",
-                table: "Service_offers",
-                column: "serviceid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_user_vehicles_vehicleid",
-                table: "user_vehicles",
+                name: "IX_User_Vehicle_vehicleid",
+                table: "User_Vehicle",
                 column: "vehicleid");
 
             migrationBuilder.CreateIndex(
@@ -519,34 +495,31 @@ namespace AuthenticationApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Offers");
+
+            migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Service_offers");
-
-            migrationBuilder.DropTable(
-                name: "user_vehicles");
+                name: "User_Vehicle");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Order_status");
-
-            migrationBuilder.DropTable(
-                name: "Offers");
+                name: "Offer_status");
 
             migrationBuilder.DropTable(
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Materials");
 
             migrationBuilder.DropTable(
-                name: "Offer_status");
+                name: "Order_status");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Vehicles");

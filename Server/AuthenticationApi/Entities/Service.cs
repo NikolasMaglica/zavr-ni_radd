@@ -12,10 +12,10 @@ namespace AuthenticationApi.Entities
         public string name { get; set; }=String.Empty;
         [Required]
         [MaxLength(20)]
-        public float price { get; set; }
+        public decimal price { get; set; }
         [MaxLength(200)]
         public string description { get; set; }= String.Empty;
-        public ICollection<Service_Offer>? service_offer { get; set; }
+        public ICollection<Offer>? Offers { get; set; }
 
     }
 }

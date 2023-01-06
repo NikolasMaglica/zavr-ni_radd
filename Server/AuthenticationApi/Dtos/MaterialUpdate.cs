@@ -12,7 +12,7 @@ namespace AuthenticationApi.Dtos
         public int instockquantity { get; set; }
         [Required]
 
-        public int price { get; set; }
+        public decimal price { get; set; }
         public string description { get; set; } = String.Empty;
     }
 }

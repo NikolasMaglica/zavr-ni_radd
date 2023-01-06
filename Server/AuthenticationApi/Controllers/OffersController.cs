@@ -51,32 +51,9 @@ namespace AuthenticationApi.Controllers
         public IActionResult GetOffer([FromRoute] int id)
         {
             var update = _appDbContext.Offers?.Find(id);
-            if (update == null)
-            {
-                throw new KeyNotFoundException("Ponuda nije pronađena u bazi podataka");
-            }
-
-            var material = _appDbContext.Materials.Where(x => x.id == update.materialid).FirstOrDefault();
-            if (material == null)
-            {
-                throw new KeyNotFoundException("Materijal nije pronađena u bazi podataka");
-            }
-
-            var offer = _appDbContext.Offers.Where(x => x.materialid == material.id).FirstOrDefault();
-            if (offer == null)
-            {
-                throw new KeyNotFoundException("Ponuda_m nije pronađena u bazi podataka");
-            }
-
-            offer.totalPrice = offer.quantity * material.price;
-
-            var serializerOptions = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve
-            };
-
-            var serializedObject = JsonSerializer.Serialize(update, serializerOptions);
-            return Ok(serializedObject);
+            
+               
+            return Ok(update);
         }
 
 

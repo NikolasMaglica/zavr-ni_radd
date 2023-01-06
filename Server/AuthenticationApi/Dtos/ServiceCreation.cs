@@ -9,7 +9,7 @@ namespace AuthenticationApi.Dtos
         public string name { get; set; } = String.Empty;
         [Required]
 
-        public float price { get; set; }
+        public decimal price { get; set; }
         public string description { get; set; } = String.Empty;
 
     }

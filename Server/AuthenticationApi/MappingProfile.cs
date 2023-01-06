@@ -19,14 +19,14 @@ namespace nikolas.Extensions
             CreateMap<ClientCreation, Client>();
             CreateMap<ServiceCreation, Service>();
             CreateMap<ServiceUpdate, Service>();
-            CreateMap<Service_OfferCreation, Service_Offer>();
-            CreateMap<Service_OfferUpdate, Service_Offer>();
             CreateMap<MaterialUpdate, Material>();
             CreateMap<MaterialCreation, Material>();
             CreateMap<OrderCreation, Order>();
             CreateMap<OrderUpdate, Order>();
             CreateMap<Offer_StatusCreation, Offer_Status>();
             CreateMap<Order_StatusCreation, Order_Status>();
+            CreateMap<User_VehicleCreation, User_Vehicle>();
+            CreateMap<User_VehicleUpdate, User_Vehicle>();
 
 
 

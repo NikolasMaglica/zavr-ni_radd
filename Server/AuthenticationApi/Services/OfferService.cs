@@ -2,10 +2,8 @@
 
 using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
-using AuthenticationApi.Entities;
 using AutoMapper;
-using System.Data.Entity;
-using System.Diagnostics;
+
 
 namespace AuthenticationApi.Services
 {
@@ -24,15 +22,17 @@ namespace AuthenticationApi.Services
         public IEnumerable<Offer> GetAllOffers()
         {
             // Dohvati sve ponude i sortiraj ih po cijeni
-            var offers = FindAll().OrderBy(ow => ow.price).ToList();
+            var offers = FindAll().OrderBy(ow => ow.vehicleid).ToList();
 
             // Dohvati materijale za svaku ponudu
             foreach (var offer in offers)
             {
                 var material = _appDbContext.Materials.Where(x => x.id == offer.materialid).FirstOrDefault();
+                var service = _appDbContext.Services.Where(x => x.id == offer.serviceid).FirstOrDefault();
+
 
                 // Ažuriraj totalPrice ponude s cijenom materijala
-                offer.totalPrice = offer.quantity * material.price;
+                offer.totalPrice = (Convert.ToDecimal(offer.materialquantity) * material.price) + (Convert.ToDecimal(offer.servicequantity) * service.price);
             }
 
             return offers;
@@ -72,7 +72,7 @@ namespace AuthenticationApi.Services
                 if (update.offer_statusid == 1)
                 {
                    
-                    material!.instockquantity += update!.quantity;
+                    material!.instockquantity += update!.materialquantity;
                     _appDbContext.Offers.Update(update);
                     _appDbContext.Materials!.Update(material!);
 

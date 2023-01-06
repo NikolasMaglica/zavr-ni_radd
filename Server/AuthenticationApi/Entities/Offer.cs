@@ -6,12 +6,13 @@ using System.ComponentModel.DataAnnotations;
 public class Offer
 {
     public int id { get; set; }
-    [Required]
-    [StringLength(10)]
-    public int price { get; set; }
+   
     [Required]
 
-    public int quantity { get; set; }
+    public int materialquantity { get; set; }
+    [Required]
+
+    public int servicequantity { get; set; }
     [Required]
 
     public string userid { get; set; } = String.Empty;
@@ -29,12 +30,13 @@ public class Offer
     public int offer_statusid { get; set; }
 
     public virtual Offer_Status? offer_status { get; set; }
-    public ICollection<Service_Offer>? service_offer { get; set; }
     public int materialid { get; set; }
 
     public virtual Material? material { get; set; }
+    public int serviceid { get; set; }
 
-    public int totalPrice { get; set; }
+    public virtual Service? service { get; set; }
+    public decimal totalPrice { get; set; }
 
   
 }

@@ -13,9 +13,8 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<Vehicle_Type> Vehicle_Types { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Client> Clients { get; set; }
-    public DbSet<User_Vehicle> user_vehicles { get; set; }
+    public DbSet<User_Vehicle> User_Vehicle { get; set; }
     public DbSet<Service> Services { get; set; }
-    public DbSet<Service_Offer> Service_offers { get; set; }
     public DbSet<Material> Materials { get; set; }
     public DbSet<Order> Order { get; set; }
     public DbSet<Order_Status> Order_status { get; set; }
@@ -54,6 +53,12 @@ public class AppDbContext : IdentityDbContext<User>
             .WithOne(p => p.material)
             .HasForeignKey(p => p.materialid);
         });
+        builder.Entity<Service>(e =>
+        {
+            e.HasMany(p => p.Offers)
+            .WithOne(p => p.service)
+            .HasForeignKey(p => p.serviceid);
+        });
         builder.Entity<Material>(e =>
         {
             e.HasMany(p => p.Offers)
@@ -74,7 +79,7 @@ public class AppDbContext : IdentityDbContext<User>
         });
 
         builder.Entity<User_Vehicle>()
-        .HasKey(bc => new { bc.userid, bc.vehicleid });
+        .HasKey(bc => bc.id);
         builder.Entity<User_Vehicle>()
             .HasOne(bc => bc.user)
             .WithMany(b => b.user_vehicle)
@@ -83,8 +88,19 @@ public class AppDbContext : IdentityDbContext<User>
             .HasOne(bc => bc.vehicle)
             .WithMany(c => c.user_vehicle)
             .HasForeignKey(bc => bc.vehicleid);
+        builder.Entity<Material>()
+       .Property(p => p.price)
+       .HasColumnType("decimal(18,3)");
+        builder.Entity<Service>()
+    .Property(p => p.price)
+    .HasColumnType("decimal(18,3)");
+        builder.Entity<Offer>()
+    .Property(p => p.totalPrice)
+    .HasColumnType("decimal(18,3)");
+
+
 
     }
-    
+
 }
 

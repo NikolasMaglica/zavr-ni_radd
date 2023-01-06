@@ -17,6 +17,7 @@ builder.Services.AddScoped<IClient, ClientService>();
 builder.Services.AddScoped<IOffer_Status, Offer_StatusService>();
 builder.Services.AddScoped<IVehicle_Type, Vehicle_TypeService>();
 builder.Services.AddScoped<IOrder_Status, Order__StatusService>();
+builder.Services.AddScoped<IUser_Vehicle, User_VehicleService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddRoles<IdentityRole>()
@@ -93,7 +94,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddScoped<IOffer, OfferService>();
 builder.Services.AddScoped<IService, ServiceService>();
-builder.Services.AddScoped<IService_Offer, Service_OfferService>();
 builder.Services.AddScoped<IMaterial, MaterialService>();
 builder.Services.AddScoped<IOrder, OrderService>();
 
