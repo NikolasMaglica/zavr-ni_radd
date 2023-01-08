@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/models/vehicle.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -25,7 +26,7 @@ export class VehicleEditComponent implements OnInit {
  vehicle_typeid:'',
  clientid:''
   }
-  constructor(private clientType:ClientsService,private vehicleService:VehicleService, private router:Router, private vehicle_type:VehicleTypeService, private route: ActivatedRoute) { }
+  constructor(private authenticationService:AuthenticationService, private clientType:ClientsService,private vehicleService:VehicleService, private router:Router, private vehicle_type:VehicleTypeService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.Vehicle_TypeId$=this.vehicle_type.getAllVehicle_Types();
@@ -45,6 +46,9 @@ this.VehicleDetalils=response;
       }
     })
 
+  }
+  logout(): void {
+    this.authenticationService.logout();
   }
   updateVehicle(id:string){
     this.vehicleService.updateVehicle(this.VehicleDetalils.id,this.VehicleDetalils).subscribe({

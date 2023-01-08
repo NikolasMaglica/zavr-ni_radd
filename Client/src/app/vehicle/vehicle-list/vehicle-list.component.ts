@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/models/vehicle.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -39,7 +40,7 @@ client:any=[];
   
 
   
-  constructor(private clientService:ClientsService, private router:Router,private vehicleService:VehicleService, private vehicleTypeService:VehicleTypeService) { }
+  constructor(private authenticationService: AuthenticationService, private clientService:ClientsService, private router:Router,private vehicleService:VehicleService, private vehicleTypeService:VehicleTypeService) { }
 
   ngOnInit(): void {
     this.refreshVehicle_TypeMap();
@@ -82,6 +83,9 @@ this.vehicleService.getAllVehicles().subscribe({
         this.clientTypesMap.set(this.client[i].id, this.client[i].firstlastname);
       }
     })
+  }
+  logout(): void {
+    this.authenticationService.logout();
   }
 
 }

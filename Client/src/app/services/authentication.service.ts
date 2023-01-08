@@ -49,7 +49,7 @@ export class AuthenticationService {
 
   public logout() {
     localStorage.removeItem(this.userKey);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   public isLoggedIn(): boolean {

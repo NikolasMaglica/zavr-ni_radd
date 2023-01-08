@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/models/vehicle.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -27,7 +28,7 @@ export class VehicleAddComponent implements OnInit {
  clientid:''
     
   }
-  constructor(private vehicleService:VehicleService, private router:Router, private vehicletypeService:VehicleTypeService,private clientType:ClientsService) { }
+  constructor(private authenticationService:AuthenticationService, private vehicleService:VehicleService, private router:Router, private vehicletypeService:VehicleTypeService,private clientType:ClientsService) { }
 
   ngOnInit(): void {
     this.Vehicle_TypeId$=this.vehicletypeService.getAllVehicle_Types();
@@ -35,6 +36,9 @@ export class VehicleAddComponent implements OnInit {
 
   
    
+  }
+  logout(): void {
+    this.authenticationService.logout();
   }
   addVehicle(){
     this.vehicleService.addVehicle(this.addVehicleRequest).subscribe({

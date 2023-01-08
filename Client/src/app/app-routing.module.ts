@@ -35,7 +35,6 @@ import { MaterialOfferEditComponent } from './material_offer/material-offer-edit
 import { MaterialOfferAddComponent } from './material_offer/material-offer-add/material-offer-add.component';
 import { MaterialOfferListComponent } from './material_offer/material-offer-list/material-offer-list.component';
 import { ServiceOfferEditComponent } from './service_offer/service-offer-edit/service-offer-edit.component';
-import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
   {
@@ -61,6 +60,9 @@ const routes: Routes = [
   {
     path: 'clientlist',
     component: ClientListComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'material',
@@ -89,6 +91,9 @@ const routes: Routes = [
   {
     path: 'vehicle',
     component: VehicleAddComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'service',
@@ -97,6 +102,9 @@ const routes: Routes = [
   {
     path: 'client',
     component: ClientsAddComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   
   {
@@ -118,6 +126,9 @@ const routes: Routes = [
   {
     path: 'vehicle/edit/:id',
     component: VehicleEditComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'service/edit/:id',
@@ -142,14 +153,23 @@ const routes: Routes = [
   {
     path: 'vehiclelist',
     component: VehicleListComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'vehicle_type',
     component: VehicleTypeAddComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'vehicle_type/edit/:id',
     component: VehicleTypeEditComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'material/edit/:id',
@@ -158,26 +178,39 @@ const routes: Routes = [
   {
     path: 'client/edit/:id',
     component: ClientEditComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'vehicle_typelist',
     component: VehicleTypeListsComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'offers',
     component: OffersAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.Admin]
+    }
+
   },
   {
     path: 'register',
     component: RegisterPageComponent,
   },
-  {
-    path: 'menu',
-    component: MenuComponent,
-  },
+  
   {
     path: 'offerslist',
     component: OffersListsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
+    
   },
    {
     path: 'offers/edit/:id',

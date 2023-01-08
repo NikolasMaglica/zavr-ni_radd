@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from 'src/app/models/client.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class ClientEditComponent implements OnInit {
     phonenumber:0
   }
  
-  constructor(private clientType:ClientsService,private route: ActivatedRoute, private router:Router) { }
+  constructor(private authenticationService:AuthenticationService, private clientType:ClientsService,private route: ActivatedRoute, private router:Router) { }
   ngOnInit(): void {
     
     this.route.paramMap.subscribe({
@@ -41,7 +42,9 @@ this.addClientRequest=response;
         }
       });
     }
-  
+    logout(): void {
+      this.authenticationService.logout();
+    }
   }
 
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Vehicle_Type } from 'src/app/models/vehicle_type';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class VehicleTypeAddComponent implements OnInit {
     id:'',
     vehicle_typename:'',
   }
-  constructor(private vehicleType:VehicleTypeService, private router:Router) { }
+  constructor(private authenticationService:AuthenticationService, private vehicleType:VehicleTypeService, private router:Router) { }
 
   ngOnInit(): void {
   
@@ -26,6 +27,9 @@ export class VehicleTypeAddComponent implements OnInit {
         this.router.navigate(['vehicle_typelist']);
       }
     })  }
+    logout(): void {
+      this.authenticationService.logout();
+    }
 }
 
 

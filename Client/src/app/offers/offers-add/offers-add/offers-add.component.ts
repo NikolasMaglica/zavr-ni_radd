@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MyErrorStateMatcher } from 'src/app/helpers/error-state-matcher';
 import { Offer } from 'src/app/models/offer.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { OfferStatusService } from 'src/app/services/offer-status.service';
 import { OffersService } from 'src/app/services/offers.service';
@@ -30,7 +31,7 @@ export class OffersAddComponent implements OnInit {
    vehicleid:'',
    offer_statusid:''
   }
-  constructor(private offer_statusType:OfferStatusService, private clientService:ClientsService, private offerService:OffersService, private router:Router, private userService:UsersService, private vehicleService:VehicleService) { }
+  constructor(private offer_statusType:OfferStatusService, private clientService:ClientsService, private offerService:OffersService, private router:Router, private userService:UsersService, private vehicleService:VehicleService,private authenticationService:AuthenticationService) { }
 
   ngOnInit(): void {
     this.UserTypesId$=this.userService.getAllUsers();
@@ -38,11 +39,16 @@ export class OffersAddComponent implements OnInit {
    this.ClientTypesId$=this.clientService.getAllClients();
    this.Offer_StatusTypesid$=this.offer_statusType.getAllOffers();
   }
+ 
   addOffer(){
     this.offerService.addOffer(this.addOfferRequest).subscribe({
       next:(offer)=>{
         this.router.navigate(['offerslist']);
       }
     })  }
+    logout(): void {
+      this.authenticationService.logout();
+    }
+    
 }
 

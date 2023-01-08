@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Offer } from 'src/app/models/offer.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { OfferStatusService } from 'src/app/services/offer-status.service';
 import { OffersService } from 'src/app/services/offers.service';
@@ -49,7 +50,7 @@ userList:any=[];
     this.modalTitle="Lista zaposlenika";
     this.activateAddEditOfferComponent=true;
   }
-  constructor(private offer_statusType:OfferStatusService, private vehicleService:VehicleService,private router:Router,private offerService:OffersService, private userService:UsersService, private clientService:ClientsService) { }
+  constructor(private authenticationService:AuthenticationService, private offer_statusType:OfferStatusService, private vehicleService:VehicleService,private router:Router,private offerService:OffersService, private userService:UsersService, private clientService:ClientsService) { }
 
   ngOnInit(): void {
     this.refreshVehicleMap();
@@ -113,6 +114,9 @@ this.offerService.getAllOffers().subscribe({
         this.offerStatusMap.set(this.status[i].id, this.status[i].name);
       }
     })
+  }
+  logout(): void {
+    this.authenticationService.logout();
   }
  
 }

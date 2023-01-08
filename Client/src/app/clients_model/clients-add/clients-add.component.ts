@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Client } from 'src/app/models/client.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 
 @Component({
@@ -17,11 +18,14 @@ export class ClientsAddComponent implements OnInit {
     adress:'',
     phonenumber:0
   }
-  constructor(private clientService:ClientsService, private router:Router) { }
+  constructor(private authenticationService:AuthenticationService,private clientService:ClientsService, private router:Router) { }
 
   ngOnInit(): void {
   
    
+  }
+  logout(): void {
+    this.authenticationService.logout();
   }
   addClientType(){
     this.clientService.addClient(this.addVehicle_TypeRequest).subscribe({

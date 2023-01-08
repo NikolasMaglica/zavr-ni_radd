@@ -1,18 +1,25 @@
 <div class="container my-5">
-    <h1 class="mb-3">narudžbe</h1>
+    <h1 class="mb-3">Nardužbe</h1>
   
     <table class="table" *ngIf="orders  && orders.length > 0">
         <thead> 
             <tr>
                 <th>ID</th>
                 <th>Vrijeme</th>
+                <th>Količina materijala</th>
+                <th>Materijal</th>
+                <th>Status narudžbe</th>
+
                
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let order of order$|async">
                 <td>{{order.id}}</td>
-                <td>{{order.datetime}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.quantity}}</td>
+                <td>{{MaterialTypesMap.get(order.materialid)}}</td>
+                <td>{{Order_StatusTypesMap.get(order.order_statusid)}}</td>
                 <td>
                     <button class="btn btn-outline-primary me-2 mb-1"
                     [routerLink]="['/order','edit', order.id]" data-bs-toggle="modal" data-bs-target="#staticBackdrop"

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Vehicle_Type } from 'src/app/models/vehicle_type';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class VehicleTypeEditComponent implements OnInit {
     id:'',
     vehicle_typename:'',
   }
-  constructor(private vehicleType:VehicleTypeService,private route: ActivatedRoute, private router:Router) { }
+  constructor(private authenticationService:AuthenticationService,private vehicleType:VehicleTypeService,private route: ActivatedRoute, private router:Router) { }
   ngOnInit(): void {
     
     this.route.paramMap.subscribe({
@@ -37,6 +38,10 @@ this.addVehicle_TypeRequest=response;
         }
       });
     }
+    logout(): void {
+      this.authenticationService.logout();
+    }
+
   
   }
 

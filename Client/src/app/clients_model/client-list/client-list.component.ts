@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Client } from 'src/app/models/client.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class ClientListComponent implements OnInit {
  
    
   
-  constructor(private clientService:ClientsService, private router:Router) { }
+  constructor(private authenticationService:AuthenticationService, private clientService:ClientsService, private router:Router) { }
 
   ngOnInit(): void {
     this.Clients$=this.clientService.getAllClients();
@@ -44,6 +45,9 @@ this.clientService.getAllClients().subscribe({
       this.Clients$ = this.clientService.getAllClients();
       })
     }
+  }
+  logout(): void {
+    this.authenticationService.logout();
   }
 
 }

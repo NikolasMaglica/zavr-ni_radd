@@ -1,10 +1,53 @@
-<div class="authentication-card-container">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-3">
+  <div class="container-fluid">
+    <h2 class="navbar-brand"  >AUTOMEHANIČARSKA RADIONICA</h2>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+ 
+    <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto ">
+        <li class="nav-item">
+          <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mx-2" href="#">Products</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/vehicle">Dodaj vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/vehiclelist">Sva vozila</a></li>
+            <li><a class="dropdown-item" href="/vehicle_typelist">Sve vrste vozila</a></li>
+            <li><a class="dropdown-item" href="/vehicle_type">Dodaj vrstu vozila</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Ponude
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
+            <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
+            <li><a class="dropdown-item" href="#">Contact us</a></li>
+          </ul>
+        </li>
+        <li class="nav-item flare">
+          <button mat-raised-button color="dark" (click)="logout()">Odjavi se</button>
+    </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container my-5">
     <h1 class="mb-3">Uredi podatke o vrsti vozila</h1>
   
-  <div class="row">
-    <div class="col-6">
-  
-   <form #form="ngForm" (ngSubmit)="updateVehicle_Type(addVehicle_TypeRequest.id)">
+   <form 
+   #form="ngForm" (ngSubmit)="updateVehicle_Type(addVehicle_TypeRequest.id)">
     <div class="form-group">
       <label for="id" class="form-label">Id</label>
       <input type="text" class="form-control" id="id" aria-label="Disabled input example" disabled  aria-describedby="emailHelp" 
@@ -13,14 +56,19 @@
        <div class="form-group">
          <label for="vehicle_typename">Naziv vrste vozila</label>
          <input type="text" class="form-control" id="vehicle_typename" aria-describedby="emailHelp" placeholder="Unesi naziv vrste vozila" 
-         name=vehicle_typename [(ngModel)]="addVehicle_TypeRequest.vehicle_typename">
-       </div>       
-       
-       <button type="submit" class="btn btn-primary">Spremi</button>
+         required name=vehicle_typename [(ngModel)]="addVehicle_TypeRequest.vehicle_typename" #vehicle_typename="ngModel">   
+         <div *ngIf="vehicle_typename.invalid && (vehicle_typename.dirty || vehicle_typename.touched)"
+        >
+     
+       <div *ngIf="vehicle_typename.errors?.['required']" class="alert alert-primary" role="alert">
+         Unos vrste vozila je <strong>obavezan</strong>.
+       </div>
+      </div> 
+
+       <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
   
   
-      </form>
+
     </div>
   
-  </div>
-  </div>
+ 

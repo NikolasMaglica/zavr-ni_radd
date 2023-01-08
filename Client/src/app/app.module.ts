@@ -18,7 +18,6 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {AdminSecretPageComponent} from './admin-secret-page/admin-secret-page.component';
 import { OffersAddComponent } from './offers/offers-add/offers-add/offers-add.component';
-import { MenuComponent } from './menu/menu.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { OffersListsComponent } from './offers/offers-lists/offers-lists.component';
 import { EditOffersComponent } from './offers/offers-edit/edit-offers/edit-offers.component';
@@ -48,6 +47,8 @@ import { OrderMaterialListComponent } from './order_material/order-material-list
 import { MaterialOfferAddComponent } from './material_offer/material-offer-add/material-offer-add.component';
 import { MaterialOfferEditComponent } from './material_offer/material-offer-edit/material-offer-edit.component';
 import { MaterialOfferListComponent } from './material_offer/material-offer-list/material-offer-list.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { OrderAddComponent } from './order/order-add/order-add.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { MaterialOfferListComponent } from './material_offer/material-offer-list
     RegisterPageComponent,
     AdminSecretPageComponent,
     OffersAddComponent,
-    MenuComponent,
+   
     OffersListsComponent,
     EditOffersComponent,
     VehicleTypeAddComponent,
@@ -86,7 +87,9 @@ import { MaterialOfferListComponent } from './material_offer/material-offer-list
     MaterialOfferAddComponent,
     MaterialOfferEditComponent,
     MaterialOfferListComponent,
+    OrderAddComponent,
     
+
   ],
   imports: [
     CommonModule,
@@ -102,8 +105,8 @@ import { MaterialOfferListComponent } from './material_offer/material-offer-list
     MatCardModule,
     MatInputModule,
     MatSnackBarModule,
-    
-    
+    MatToolbarModule,
+
    
   ],
   providers: [

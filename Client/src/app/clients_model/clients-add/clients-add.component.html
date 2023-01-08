@@ -1,6 +1,61 @@
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-3">
+  <div class="container-fluid">
+    <h2 class="navbar-brand"  >AUTOMEHANIČARSKA RADIONICA</h2>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+ 
+    <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto ">
+        <li class="nav-item">
+          <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mx-2" href="#">Products</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/vehicle">Dodaj vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/vehiclelist">Sva vozila</a></li>
+            <li><a class="dropdown-item" href="/vehicle_typelist">Sve vrste vozila</a></li>
+            <li><a class="dropdown-item" href="/vehicle_type">Dodaj vrstu vozila</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Klijenti
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/client">Dodaj klijenta</a></li>
+
+            <li><a class="dropdown-item" href="/clientlist">Svi klijenti</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Ponude
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
+            <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
+            <li><a class="dropdown-item" href="#">Contact us</a></li>
+          </ul>
+        </li>
+        <li class="nav-item flare">
+          <button mat-raised-button color="dark" (click)="logout()">Odjavi se</button>
+    </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 <div class="container my-5">
-    <h1 class="mb-3">Dodaj novu ponudu</h1>
+    <h1 class="mb-3">Dodaj novog klijenta</h1>
   
   
    <form
@@ -63,7 +118,7 @@
      
         
     
-       <button type="submit" class="btn btn-primary">Spremi</button>
+      <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
   
 
   

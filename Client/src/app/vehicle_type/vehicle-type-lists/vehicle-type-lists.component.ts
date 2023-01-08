@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle_Type } from 'src/app/models/vehicle_type';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
 
 @Component({
@@ -22,7 +23,7 @@ userList:any=[];
  
    
   
-  constructor(private vehicleType:VehicleTypeService, private router:Router) { }
+  constructor(private authenticationService:AuthenticationService, private vehicleType:VehicleTypeService, private router:Router) { }
 
   ngOnInit(): void {
     this.vehicle_Type$=this.vehicleType.getAllVehicle_Types();
@@ -43,6 +44,9 @@ this.vehicleType.getAllVehicle_Types().subscribe({
       })
     }
   }
+   logout(): void {
+      this.authenticationService.logout();
+    }
 
 }
 
