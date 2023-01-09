@@ -26,6 +26,6 @@ updateOrder(id:string, updateOrderRequest:Order):Observable<Order>{
   return this.http.put<Order>(this.baseApiUrl +'api/order/'+id, updateOrderRequest);
 }
 deleteOrder(id:string):Observable<Order>{
-  return this.http.delete<Order>(this.baseApiUrl +'api/vehicle/'+id);
+  return this.http.delete<Order>(this.baseApiUrl +'api/order/'+id);
 }
 }

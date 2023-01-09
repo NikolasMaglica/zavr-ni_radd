@@ -35,6 +35,10 @@ import { MaterialOfferEditComponent } from './material_offer/material-offer-edit
 import { MaterialOfferAddComponent } from './material_offer/material-offer-add/material-offer-add.component';
 import { MaterialOfferListComponent } from './material_offer/material-offer-list/material-offer-list.component';
 import { ServiceOfferEditComponent } from './service_offer/service-offer-edit/service-offer-edit.component';
+import { OrderAddComponent } from './order/order-add/order-add.component';
+import { UserVehicleAddComponent } from './user-vehicle/user-vehicle-add/user-vehicle-add.component';
+import { UserVehicleListComponent } from './user-vehicle/user-vehicle-list/user-vehicle-list.component';
+import { UserVehicleEditComponent } from './user-vehicle/user-vehicle-edit/user-vehicle-edit.component';
 
 const routes: Routes = [
   {
@@ -67,14 +71,42 @@ const routes: Routes = [
   {
     path: 'material',
     component: MaterialAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'materiallist',
     component: MaterialListComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
+  },
+  {
+    path: 'uservehicle',
+    component: UserVehicleAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
+  },
+  {
+    path: 'uservehiclelist',
+    component: UserVehicleListComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'servicelist',
     component: ServiceListComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.Admin, Role.User]
+    }
   },
   {
     path: 'service_offerlist',
@@ -83,6 +115,17 @@ const routes: Routes = [
   {
     path: 'orderlist',
     component: OrderListComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
+  },
+  {
+    path:'order',
+    component:OrderAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'service_offer',
@@ -98,6 +141,10 @@ const routes: Routes = [
   {
     path: 'service',
     component: ServiceAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.Admin,Role.User]
+    }
   },
   {
     path: 'client',
@@ -131,8 +178,19 @@ const routes: Routes = [
     }
   },
   {
+    path: 'uservehicle/edit/:id',
+    component: UserVehicleEditComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
+  },
+  {
     path: 'service/edit/:id',
     component: ServiceEditComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.Admin]
+    }
   },
   {
     path: 'order_material/edit/:id',
@@ -149,6 +207,9 @@ const routes: Routes = [
   {
     path: 'order/edit/:id',
     component: OrderEditComponent,
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'vehiclelist',
@@ -174,10 +235,15 @@ const routes: Routes = [
   {
     path: 'material/edit/:id',
     component: MaterialEditComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.User, Role.Admin]
+    }
   },
   {
     path: 'client/edit/:id',
     component: ClientEditComponent,
+    canActivate: [AuthGuard],
     data: {
       roles: [Role.User, Role.Admin]
     }
@@ -192,10 +258,7 @@ const routes: Routes = [
   {
     path: 'offers',
     component: OffersAddComponent,
-    canActivate: [AuthGuard],
-    data: {
-      roles: [Role.Admin]
-    }
+   
 
   },
   {

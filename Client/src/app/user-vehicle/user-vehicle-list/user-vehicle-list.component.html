@@ -1,0 +1,137 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-3">
+    <div class="container-fluid">
+      <h2 class="navbar-brand"  >AUTOMEHANIČARSKA RADIONICA</h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+   
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto ">
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#">Products</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Vozilo
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/vehicle">Dodaj vozilo</a></li>
+  
+              <li><a class="dropdown-item" href="/vehiclelist">Sva vozila</a></li>
+              <li><a class="dropdown-item" href="/vehicle_typelist">Sve vrste vozila</a></li>
+              <li><a class="dropdown-item" href="/vehicle_type">Dodaj vrstu vozila</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Narudžba
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/order">Dodaj narudžbu</a></li>
+  
+              <li><a class="dropdown-item" href="/orderlist">Sve narudžbe</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Usluge
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+  
+              <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Material
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/material">Dodaj materijal</a></li>
+  
+              <li><a class="dropdown-item" href="/materiallist">Svi materijali</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Korisnikovo vozilo
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+  
+              <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Ponude
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
+              <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
+            </ul>
+          </li>
+          <li class="nav-item flare">
+            <button mat-raised-button color="dark" (click)="logout()">Odjavi se</button>
+      </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div class="container my-5">
+    <h1 class="mb-3">Zaposlenikova vozila</h1>
+  
+    <table class="table">
+        <thead> 
+            <tr>
+              <th>iD</th>
+                <th>Zaposlenik</th>
+                <th>Vozilo</th>
+                <th>Opis</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user_vehicle of User_Vehicle$|async">
+                <td>{{user_vehicle.id}}</td>
+                <td>{{UserTypesMap.get(user_vehicle.userid)}}</td>
+                <td>{{VehicleTypesMap.get(user_vehicle.vehicleid)}}</td>
+                <td>{{user_vehicle.description}}</td>
+                
+                <td>
+                    <button class="btn btn-outline-primary me-2 mb-1"
+                    [routerLink]="['/uservehicle','edit', user_vehicle.id]" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                      </svg>
+                    </button>
+                    <button class="btn btn-outline-danger me-2 mb-1"
+                    (click)="delete(user_vehicle)"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg>
+                    </button>
+                  </td>
+            </tr>
+        </tbody>
+    </table>
+    <p *ngIf="!user_vehicle || user_vehicle.length <= 0">Nema zaposlenikovih vozila</p>
+    </div>
+   
+       
+      
+  
+  
+  

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Material } from 'src/app/models/material.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { MaterialService } from 'src/app/services/material.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class MaterialListComponent implements OnInit {
    
      
     
-    constructor(private materialType:MaterialService, private router:Router) { }
+    constructor(private authenticationService:AuthenticationService, private materialType:MaterialService, private router:Router) { }
   
     ngOnInit(): void {
       this.material$=this.materialType.getAllMaterial();
@@ -44,6 +45,9 @@ export class MaterialListComponent implements OnInit {
         this.material$ = this.materialType.getAllMaterial();
         })
       }
+    }
+    logout(): void {
+      this.authenticationService.logout();
     }
   
   }

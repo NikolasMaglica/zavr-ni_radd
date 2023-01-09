@@ -49,6 +49,9 @@ import { MaterialOfferEditComponent } from './material_offer/material-offer-edit
 import { MaterialOfferListComponent } from './material_offer/material-offer-list/material-offer-list.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { OrderAddComponent } from './order/order-add/order-add.component';
+import { UserVehicleAddComponent } from './user-vehicle/user-vehicle-add/user-vehicle-add.component';
+import { UserVehicleEditComponent } from './user-vehicle/user-vehicle-edit/user-vehicle-edit.component';
+import { UserVehicleListComponent } from './user-vehicle/user-vehicle-list/user-vehicle-list.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +91,9 @@ import { OrderAddComponent } from './order/order-add/order-add.component';
     MaterialOfferEditComponent,
     MaterialOfferListComponent,
     OrderAddComponent,
+    UserVehicleAddComponent,
+    UserVehicleEditComponent,
+    UserVehicleListComponent,
     
 
   ],

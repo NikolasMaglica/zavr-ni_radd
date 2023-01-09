@@ -28,12 +28,44 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Narudžba
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/order">Dodaj narudžbu</a></li>
+
+            <li><a class="dropdown-item" href="/orderlist">Sve narudžbe</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Usluge
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+
+            <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Material
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/material">Dodaj materijal</a></li>
+
+            <li><a class="dropdown-item" href="/materiallist">Svi materijali</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ponude
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
             <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
-            <li><a class="dropdown-item" href="#">Contact us</a></li>
           </ul>
         </li>
         <li class="nav-item flare">
@@ -50,22 +82,31 @@
         <thead> 
             <tr>
                 <th>ID</th>
-                <th>Cijena</th>
+                <th>Količina materijala</th>
+                <th>Količina usluge</th>
                 <th>User ID</th>
                 <th>Client ID</th>
                 <th>Vehicle ID</th>
                 <th>OferStatus</th>
-               
+                <th>Material</th>
+                <th>Usluga</th>
+                <th>Ukupna cijena</th>               
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let offer of offerList$|async">
                 <td>{{offer.id}}</td>
-                <td>{{offer.price}}</td>
+                <td>{{offer.materialquantity}}</td>
+                <td>{{offer.servicequantity}}</td>
                 <td>{{userTypesMap.get(offer.userid)}}</td>
                 <td>{{clientTypesMap.get(offer.clientid)}}</td>
                 <td>{{vehicleTypesMap.get(offer.vehicleid)}}</td>
                 <td>{{offerStatusMap.get(offer.offer_statusid)}}</td>
+                <td>{{materialStatusMap.get(offer.materialid)}}</td>
+                <td>{{serviceStatusMap.get(offer.serviceid)}}</td>
+                <td>{{offer.totalPrice}}</td>
+
+
 
 
 

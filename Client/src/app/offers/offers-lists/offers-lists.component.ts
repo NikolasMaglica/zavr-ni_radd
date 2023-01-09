@@ -4,8 +4,10 @@ import { Observable } from 'rxjs';
 import { Offer } from 'src/app/models/offer.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ClientsService } from 'src/app/services/clients.service';
+import { MaterialService } from 'src/app/services/material.service';
 import { OfferStatusService } from 'src/app/services/offer-status.service';
 import { OffersService } from 'src/app/services/offers.service';
+import { ServiceService } from 'src/app/services/service.service';
 import { UsersService } from 'src/app/services/users.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
 
@@ -25,35 +27,37 @@ userList:any=[];
   clientTypesMap:Map<number, string> = new Map()
   vehicleTypesMap:Map<number, string> = new Map()
   offerStatusMap:Map<number, string>= new Map()
+  materialStatusMap:Map<number, string>= new Map()
+  serviceStatusMap:Map<number, string>= new Map()
 
 
-  modalTitle:string = '';
-  activateAddEditOfferComponent:boolean=false;
+
   offer:any;
   client:any;
   vehicle:any;
   status:any;
-   OfferDetails:Offer={
+  material:any;
+  service:any;
+
+  addOfferRequest: Offer={
     id:'',
-    price:0,
-    userid:'',
-    clientid:'',
-    vehicleid:'',
-    offer_statusid:''
+materialquantity:0,
+servicequantity:0,
+   userid:'',
+   clientid:'',
+   vehicleid:'',
+   offer_statusid:'',
+   materialid:'',
+   serviceid:''
   }
-  modalAdd() {
-    this.offer = {
-      id:'',
-      price:null,
-      userid:null
-    }
-    this.modalTitle="Lista zaposlenika";
-    this.activateAddEditOfferComponent=true;
-  }
-  constructor(private authenticationService:AuthenticationService, private offer_statusType:OfferStatusService, private vehicleService:VehicleService,private router:Router,private offerService:OffersService, private userService:UsersService, private clientService:ClientsService) { }
+ 
+  constructor(private serviceType:ServiceService, private materialType:MaterialService, private authenticationService:AuthenticationService, private offer_statusType:OfferStatusService, private vehicleService:VehicleService,private router:Router,private offerService:OffersService, private userService:UsersService, private clientService:ClientsService) { }
 
   ngOnInit(): void {
     this.refreshVehicleMap();
+    this.refreshMaterialMap();
+    this.refreshServiceMap();
+
   this.refreshUClientMap();
     this.refreshUserMap();
     this.refreshOffer_StatusMap() ;
@@ -112,6 +116,26 @@ this.offerService.getAllOffers().subscribe({
       for(let i = 0; i < data.length; i++)
       {
         this.offerStatusMap.set(this.status[i].id, this.status[i].name);
+      }
+    })
+  }
+  refreshMaterialMap() {
+    this.materialType.getAllMaterial().subscribe(data => {
+      this.material=data;
+
+      for(let i = 0; i < data.length; i++)
+      {
+        this.materialStatusMap.set(this.material[i].id, this.material[i].name);
+      }
+    })
+  }
+  refreshServiceMap() {
+    this.serviceType.getAllServices().subscribe(data => {
+      this.service=data;
+
+      for(let i = 0; i < data.length; i++)
+      {
+        this.serviceStatusMap.set(this.service[i].id, this.service[i].name);
       }
     })
   }

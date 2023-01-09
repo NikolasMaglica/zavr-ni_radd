@@ -14,8 +14,50 @@
         <li class="nav-item">
           <a class="nav-link mx-2" href="#">Products</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Pricing</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/vehicle">Dodaj vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/vehiclelist">Sva vozila</a></li>
+            <li><a class="dropdown-item" href="/vehicle_typelist">Sve vrste vozila</a></li>
+            <li><a class="dropdown-item" href="/vehicle_type">Dodaj vrstu vozila</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Narudžba
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/order">Dodaj narudžbu</a></li>
+
+            <li><a class="dropdown-item" href="/orderlist">Sve narudžbe</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Usluge
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+
+            <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Material
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/material">Dodaj materijal</a></li>
+
+            <li><a class="dropdown-item" href="/materiallist">Svi materijali</a></li>
+            
+          </ul>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -24,7 +66,6 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
             <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
-            <li><a class="dropdown-item" href="#">Contact us</a></li>
           </ul>
         </li>
         <li class="nav-item flare">
@@ -44,33 +85,43 @@
    
       
       <div class="form-group">
-        <label for="price">Cijena</label>
-        <input type="text" class="form-control" id="price" aria-describedby="emailHelp" placeholder="Unesi cijenu" 
-        required name=price [(ngModel)]="addOfferRequest.price" #price="ngModel" pattern="^[0-9.a]*$">   
-        <div *ngIf="price.invalid && (price.dirty || price.touched)"
+        <label for="price">Količina materijala</label>
+        <input type="text" class="form-control" id="materialquantity" aria-describedby="emailHelp" placeholder="Unesi količinu materijala" 
+        required name=materialquantity [(ngModel)]="addOfferRequest.materialquantity" #materialquantity="ngModel" pattern="^[0-9.a]*$">   
+        <div *ngIf="materialquantity.invalid && (materialquantity.dirty || materialquantity.touched)"
        >
     
-      <div *ngIf="price.errors?.['required']" class="alert alert-primary" role="alert">
-        Unos cijene je <strong>obavezan</strong>.
+      <div *ngIf="materialquantity.errors?.['required']" class="alert alert-primary" role="alert">
+        Unos količine usluge je <strong>obavezan</strong>.
       </div>
-       <div *ngIf="price.errors?.['pattern']" class="alert alert-primary" role="alert">
+       <div *ngIf="materialquantity.errors?.['pattern']" class="alert alert-primary" role="alert">
         Mozete unijeti samo <strong>brojeve</strong>.
       </div>
 
       </div> 
+    </div> 
+    <div class="form-group">
+      <label for="price">Količina usluge</label>
+      <input type="text" class="form-control" id="servicequantity" aria-describedby="emailHelp" placeholder="Unesi količinu usluge" 
+      required name=servicequantity [(ngModel)]="addOfferRequest.servicequantity" #servicequantity="ngModel" pattern="^[0-9.a]*$">   
+      <div *ngIf="servicequantity.invalid && (servicequantity.dirty || servicequantity.touched)"
+     >
+  
+    <div *ngIf="servicequantity.errors?.['required']" class="alert alert-primary" role="alert">
+      Unos količine usluge je <strong>obavezan</strong>.
+    </div>
+     <div *ngIf="servicequantity.errors?.['pattern']" class="alert alert-primary" role="alert">
+      Mozete unijeti samo <strong>brojeve</strong>.
+    </div>
+
+    </div> 
+  </div> 
+
       <div class="form-group">
         <label for="userid">Korisnik</label>
         <input type="text" class="form-control" name="userid"  [(ngModel)]="addOfferRequest.userid" *ngIf="addOfferRequest.userid!=''" >
         <select class="form-control" name="userid" id="userid" [(ngModel)]="addOfferRequest.userid" *ngIf="addOfferRequest.userid==''">
           <option *ngFor="let type of UserTypesId$|async" [value]="type.id">{{type.userName}}</option>
-        </select>
-        
-      </div>
-      <div class="form-group">
-        <label for="vehicleid">Vozilo</label>
-        <input type="text" class="form-control" name="vehicleid"  [(ngModel)]="addOfferRequest.vehicleid" *ngIf="addOfferRequest.vehicleid!=''" >
-        <select class="form-control" name="vehicleid" id="vehicleid" [(ngModel)]="addOfferRequest.vehicleid" *ngIf="addOfferRequest.vehicleid==''">
-          <option *ngFor="let type of VehicleTypesId$|async" [value]="type.id">{{type.model}}</option>
         </select>
         
       </div>
@@ -83,15 +134,43 @@
         
       </div>
       <div class="form-group">
-        <label for="offer_statusid">Klijent</label>
+        <label for="vehicleid">Vozilo</label>
+        <input type="text" class="form-control" name="vehicleid"  [(ngModel)]="addOfferRequest.vehicleid" *ngIf="addOfferRequest.vehicleid!=''" >
+        <select class="form-control" name="vehicleid" id="vehicleid" [(ngModel)]="addOfferRequest.vehicleid" *ngIf="addOfferRequest.vehicleid==''">
+          <option *ngFor="let type of VehicleTypesId$|async" [value]="type.id">{{type.model}}</option>
+        </select>
+        
+      </div>
+      
+      <div class="form-group">
+        <label for="offer_statusid">Status ponude</label>
         <input type="text" class="form-control" name="offer_statusid"  [(ngModel)]="addOfferRequest.offer_statusid" *ngIf="addOfferRequest.offer_statusid!=''" >
         <select class="form-control" name="offer_statusid" id="offer_statusid" [(ngModel)]="addOfferRequest.offer_statusid" *ngIf="addOfferRequest.offer_statusid==''">
           <option *ngFor="let type of Offer_StatusTypesid$|async" [value]="type.id">{{type.name}}</option>
         </select>
         
       </div>
-       <button type="submit" class="btn btn-primary">Spremi</button>
-  
+      <div class="form-group">
+        <label for="materialid">Material</label>
+        <input type="text" class="form-control" name="materialid"  [(ngModel)]="addOfferRequest.materialid" *ngIf="addOfferRequest.materialid!=''" >
+        <select class="form-control" name="materialid" id="materialid" [(ngModel)]="addOfferRequest.materialid" *ngIf="addOfferRequest.materialid==''">
+          <option *ngFor="let type of MaterialTypesId$|async" [value]="type.id">{{type.name}}</option>
+        </select>
+        
+      </div>
+      <div class="form-group">
+        <label for="serviceid">Usluga</label>
+        <input type="text" class="form-control" name="serviceid"  [(ngModel)]="addOfferRequest.serviceid" *ngIf="addOfferRequest.serviceid!=''" >
+        <select class="form-control" name="serviceid" id="serviceid" [(ngModel)]="addOfferRequest.serviceid" *ngIf="addOfferRequest.serviceid==''">
+          <option *ngFor="let type of ServiceTypesId$|async" [value]="type.id">{{type.name}}</option>
+        </select>
+        
+      </div>
 
+      <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
+
+      </form>
+      </div>
+      
   
-  </div>
+  

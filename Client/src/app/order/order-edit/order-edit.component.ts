@@ -46,7 +46,7 @@ this.addOrderRequest=response;
     updateOrder(id:string){
       this.orderType.updateOrder(this.addOrderRequest.id,this.addOrderRequest).subscribe({
         next:(response)=>{
-          this.router.navigate(['offers']);
+          this.router.navigate(['orderlist']);
         }
       });
     }

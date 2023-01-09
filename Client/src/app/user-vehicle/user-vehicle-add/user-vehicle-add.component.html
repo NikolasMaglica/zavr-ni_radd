@@ -1,0 +1,132 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-3">
+    <div class="container-fluid">
+      <h2 class="navbar-brand"  >AUTOMEHANIČARSKA RADIONICA</h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+   
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto ">
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#">Products</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Vozilo
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/vehicle">Dodaj vozilo</a></li>
+  
+              <li><a class="dropdown-item" href="/vehiclelist">Sva vozila</a></li>
+              <li><a class="dropdown-item" href="/vehicle_typelist">Sve vrste vozila</a></li>
+              <li><a class="dropdown-item" href="/vehicle_type">Dodaj vrstu vozila</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Narudžba
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/order">Dodaj narudžbu</a></li>
+  
+              <li><a class="dropdown-item" href="/orderlist">Sve narudžbe</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Usluge
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+  
+              <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Material
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/material">Dodaj materijal</a></li>
+  
+              <li><a class="dropdown-item" href="/materiallist">Svi materijali</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Korisnikovo vozilo
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+  
+              <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Ponude
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
+              <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
+            </ul>
+          </li>
+          <li class="nav-item flare">
+            <button mat-raised-button color="dark" (click)="logout()">Odjavi se</button>
+      </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div class="container my-5">
+    <h1 class="mb-3">Dodaj klijentovo vozilo</h1>
+  
+  
+   <form
+    #form="ngForm"
+    (ngSubmit)=" addUser_VehicleType()">
+        
+      
+      <div class="form-group">
+        <label for="userid">Offer id</label>
+        <input type="text" class="form-control" id="userid" aria-describedby="emailHelp" placeholder="Unesi naziv zaposlenika" 
+        required name=userid [(ngModel)]="addUser_VehicleRequest.userid" *ngIf="addUser_VehicleRequest.userid!=''" #userid="ngModel">   
+        <select class="form-control" name="userid" id="userid" [(ngModel)]="addUser_VehicleRequest.userid" *ngIf="addUser_VehicleRequest.userid==''">
+          <option *ngFor="let type of User$|async" [value]="type.id">{{type.id}}</option>
+        </select>
+
+      </div> 
+      <div class="form-group">
+        <label for="vehicleid">Usluga id</label>
+        <input type="text" class="form-control" id="vehicleid" aria-describedby="emailHelp" placeholder="Unesi vozilo" 
+        required name=vehicleid [(ngModel)]="addUser_VehicleRequest.vehicleid" *ngIf="addUser_VehicleRequest.vehicleid!=''" #vehicleid="ngModel">   
+        <select class="form-control" name="serviceid" id="serviceid" [(ngModel)]="addUser_VehicleRequest.vehicleid" *ngIf="addUser_VehicleRequest.vehicleid==''">
+          <option *ngFor="let type of Vehicle$|async" [value]="type.id">{{type.manufacturer}}</option>
+        </select>
+
+      
+      </div> 
+
+      <div class="form-group">
+        <label for="quantity">Opis</label>
+        <input type="text" class="form-control" id="description" aria-describedby="emailHelp" placeholder="Unesi opis" 
+        required name=description [(ngModel)]="addUser_VehicleRequest.description" #description="ngModel">   
+       
+
+      
+     
+        
+    
+        <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
+  
+
+  
+  </div>

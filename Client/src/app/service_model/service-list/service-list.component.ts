@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Service } from 'src/app/models/service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ServiceService } from 'src/app/services/service.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class ServiceListComponent implements OnInit {
   Service$!:Observable<any[]>;
 
     services:any;
-    constructor(private serviceList:ServiceService, private router:Router) { }
+    constructor(private authenticationService:AuthenticationService, private serviceList:ServiceService, private router:Router) { }
   
     ngOnInit(): void {
       this.Service$=this.serviceList.getAllServices();
@@ -36,6 +37,9 @@ export class ServiceListComponent implements OnInit {
         this.Service$ = this.serviceList.getAllServices();
         })
       }
+    }
+    logout(): void {
+      this.authenticationService.logout();
     }
   
   }

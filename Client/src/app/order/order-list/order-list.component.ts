@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Order } from 'src/app/models/order.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { MaterialService } from 'src/app/services/material.service';
 import { OrderStatusService } from 'src/app/services/order-status.service';
 import { OrderService } from 'src/app/services/order.service';
@@ -32,7 +33,7 @@ orderList:any=[];
  
    
   
-  constructor(private orderStatusService:OrderStatusService, private materialService:MaterialService, private orderType:OrderService, private router:Router) { }
+  constructor(private authenticationService:AuthenticationService, private orderStatusService:OrderStatusService, private materialService:MaterialService, private orderType:OrderService, private router:Router) { }
 
   ngOnInit(): void {
     this.refreshMaterialMap();
@@ -66,6 +67,9 @@ this.orderType.getAllOrders().subscribe({
         this.MaterialTypesMap.set(this.materialList[i].id, this.materialList[i].name);
       }
     })
+  }
+  logout(): void {
+    this.authenticationService.logout();
   }
   refreshOrder_StatusMap() {
     this.orderStatusService.getAllOrder_Status().subscribe(data => {
