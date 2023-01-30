@@ -1,4 +1,5 @@
 
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-3">
   <div class="container-fluid">
     <h2 class="navbar-brand"  >AUTOMEHANIČARSKA RADIONICA</h2>
@@ -11,9 +12,7 @@
         <li class="nav-item">
           <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Products</a>
-        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Vozilo
@@ -61,12 +60,22 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Korisnikovo vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ponude
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
             <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
-            <li><a class="dropdown-item" href="#">Contact us</a></li>
           </ul>
         </li>
         <li class="nav-item flare">
@@ -77,17 +86,17 @@
   </div>
 </nav>
   <div class="container my-5">
-      <h1 class="mb-3">Dodaj novo vozilo</h1>
+      <h1 class="mb-3">Dodaj novu narudžbu</h1>
     
     
      <form
      form #form="ngForm"
-      (ngSubmit)="addVehicle()">
+      (ngSubmit)="addOrder()">
           
         
         <div class="form-group">
-          <label for="manufacturer">Datum </label>
-          <input type="text" class="form-control" id="date" aria-describedby="emailHelp" placeholder="Unesi datum narudžbe" 
+          <label for="date">Datum </label>
+          <input type="date" class="form-control" id="date" aria-describedby="emailHelp" placeholder="Unesi datum narudžbe" 
           required name=date [(ngModel)]="addOrderRequest.date" #date="ngModel">   
           <div *ngIf="date.invalid && (date.dirty || date.touched)"
          >
@@ -97,19 +106,24 @@
         </div>
         </div> 
   
-         
+      </div> 
+
         <div class="form-group">
           <label for="model">Količina materijala</label>
           <input type="text" class="form-control" id="quantity" aria-describedby="emailHelp" placeholder="Unesi količinu materijala" 
-          required name=quantity [(ngModel)]="addOrderRequest.quantity" #quantity="ngModel">   
+          required name=quantity [(ngModel)]="addOrderRequest.quantity" #quantity="ngModel"  maxlength="6"  pattern="[0-9]*">   
           <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)"
          >
       
         <div *ngIf="quantity.errors?.['required']" class="alert alert-primary" role="alert">
           Unos količine materijala je <strong>obavezna</strong>.
         </div>
+        <div *ngIf="quantity.errors?.['pattern']" class="alert alert-primary" role="alert">
+          Možete unijeti samo<strong>brojeve</strong>.
+        </div>
         </div> 
-        
+      </div> 
+
         <div class="form-group">
           <label for="materialid">Materijal</label>
           <input type="text" class="form-control" name="materialid"  [(ngModel)]="addOrderRequest.materialid" *ngIf="addOrderRequest.materialid!=''" >
@@ -128,5 +142,5 @@
 
           <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
     
-  
+      </form>
 </div>

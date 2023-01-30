@@ -1,5 +1,4 @@
 
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-3">
   <div class="container-fluid">
     <h2 class="navbar-brand"  >AUTOMEHANIČARSKA RADIONICA</h2>
@@ -12,9 +11,7 @@
         <li class="nav-item">
           <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Products</a>
-        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Vozilo
@@ -62,6 +59,17 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Korisnikovo vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ponude
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -84,28 +92,27 @@
    form #form="ngForm"
     (ngSubmit)="updateOffer(addOfferRequest.id)">
    
-      
-      
+   
     <div class="form-group">
       <label for="price">Količina materijala</label>
-      <input type="text" class="form-control" id="materialquantity" aria-describedby="emailHelp" placeholder="Unesi količinu materijala" 
-      required name=materialquantity [(ngModel)]="addOfferRequest.materialquantity" #materialquantity="ngModel" pattern="^[0-9.a]*$">   
-      <div *ngIf="materialquantity.invalid && (materialquantity.dirty || materialquantity.touched)"
+      <input type="text" class="form-control" id="materialquantity" maxlength="5" aria-describedby="emailHelp" placeholder="Unesi količinu materijala" required name=materialquantity [(ngModel)]="addOfferRequest.materialquantity" #material_quantity="ngModel" pattern="^[0-9]*$" maxlength="6">  
+      <div *ngIf="material_quantity.invalid && (material_quantity.dirty || material_quantity.touched)"
      >
   
-    <div *ngIf="materialquantity.errors?.['required']" class="alert alert-primary" role="alert">
+    <div *ngIf="material_quantity.errors?.['required']" class="alert alert-primary" role="alert">
       Unos količine usluge je <strong>obavezan</strong>.
     </div>
-     <div *ngIf="materialquantity.errors?.['pattern']" class="alert alert-primary" role="alert">
+     <div *ngIf="material_quantity.errors?.['pattern']" class="alert alert-primary" role="alert">
       Mozete unijeti samo <strong>brojeve</strong>.
     </div>
+   
 
     </div> 
   </div> 
   <div class="form-group">
     <label for="price">Količina usluge</label>
     <input type="text" class="form-control" id="servicequantity" aria-describedby="emailHelp" placeholder="Unesi količinu usluge" 
-    required name=servicequantity [(ngModel)]="addOfferRequest.servicequantity" #servicequantity="ngModel" pattern="^[0-9.a]*$">   
+    required name=servicequantity [(ngModel)]="addOfferRequest.servicequantity" #servicequantity="ngModel" pattern="^[0-9]*$" maxlength="6">   
     <div *ngIf="servicequantity.invalid && (servicequantity.dirty || servicequantity.touched)"
    >
 
@@ -118,6 +125,7 @@
 
   </div> 
 </div> 
+
 
     <div class="form-group">
       <label for="userid">Korisnik</label>

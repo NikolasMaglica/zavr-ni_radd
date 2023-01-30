@@ -115,17 +115,15 @@ const routes: Routes = [
   {
     path: 'orderlist',
     component: OrderListComponent,
-    data: {
-      roles: [Role.User, Role.Admin]
-    }
+    canActivate: [AuthGuard],
+
+    
   },
   {
     path:'order',
     component:OrderAddComponent,
     canActivate: [AuthGuard],
-    data: {
-      roles: [Role.User, Role.Admin]
-    }
+   
   },
   {
     path: 'service_offer',
@@ -189,7 +187,7 @@ const routes: Routes = [
     component: ServiceEditComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: [Role.Admin]
+      roles: [Role.User, Role.Admin]
     }
   },
   {
@@ -207,9 +205,9 @@ const routes: Routes = [
   {
     path: 'order/edit/:id',
     component: OrderEditComponent,
-    data: {
-      roles: [Role.User, Role.Admin]
-    }
+    canActivate: [AuthGuard],
+
+   
   },
   {
     path: 'vehiclelist',

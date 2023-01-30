@@ -72,7 +72,7 @@ namespace AuthenticationApi.Services
                 if (update.offer_statusid == 1)
                 {
                    
-                    material!.instockquantity += update!.materialquantity;
+                    material!.instockquantity -= update!.materialquantity;
                     _appDbContext.Offers.Update(update);
                     _appDbContext.Materials!.Update(material!);
 

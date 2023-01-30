@@ -95,14 +95,14 @@
     (ngSubmit)=" updateUser_Vehicle(addUser_VehicleRequest.id)">
         
       
-      <div class="form-group">
+      <div class="form-group mt-3">
         <label for="userid">Offer id</label>
         <select class="form-control" name="userid" id="userid" [(ngModel)]="addUser_VehicleRequest.userid" *ngIf="addUser_VehicleRequest.userid!=''">
           <option *ngFor="let type of UserId$|async" [value]="type.id">{{type.id}}</option>
         </select>
 
       </div> 
-      <div class="form-group">
+      <div class="form-group mt-3">
         <label for="vehicleid">Usluga id</label>
         <select class="form-control" name="serviceid" id="serviceid" [(ngModel)]="addUser_VehicleRequest.vehicleid" *ngIf="addUser_VehicleRequest.vehicleid!=''">
           <option *ngFor="let type of VehicleId$|async" [value]="type.id">{{type.manufacturer}}</option>
@@ -111,11 +111,12 @@
       
       </div> 
 
-      <div class="form-group">
+      <div class="form-group mt-3">
         <label for="quantity">Opis</label>
         <input type="text" class="form-control" id="description" aria-describedby="emailHelp" placeholder="Unesi opis" 
-        required name=description [(ngModel)]="addUser_VehicleRequest.description" #description="ngModel">   
-       
+        required name=description [(ngModel)]="addUser_VehicleRequest.description" #description="ngModel" maxlength="200">   
+      </div> 
+
 
       
      
@@ -124,5 +125,5 @@
         <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
   
 
-  
+  </form>
   </div>

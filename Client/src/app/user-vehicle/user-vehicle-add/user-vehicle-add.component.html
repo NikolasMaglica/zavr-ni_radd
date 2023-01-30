@@ -95,7 +95,7 @@
     (ngSubmit)=" addUser_VehicleType()">
         
       
-      <div class="form-group">
+      <div class="form-group mt-3">
         <label for="userid">Offer id</label>
         <input type="text" class="form-control" id="userid" aria-describedby="emailHelp" placeholder="Unesi naziv zaposlenika" 
         required name=userid [(ngModel)]="addUser_VehicleRequest.userid" *ngIf="addUser_VehicleRequest.userid!=''" #userid="ngModel">   
@@ -104,7 +104,7 @@
         </select>
 
       </div> 
-      <div class="form-group">
+      <div class="form-group mt-3">
         <label for="vehicleid">Usluga id</label>
         <input type="text" class="form-control" id="vehicleid" aria-describedby="emailHelp" placeholder="Unesi vozilo" 
         required name=vehicleid [(ngModel)]="addUser_VehicleRequest.vehicleid" *ngIf="addUser_VehicleRequest.vehicleid!=''" #vehicleid="ngModel">   
@@ -115,18 +115,17 @@
       
       </div> 
 
-      <div class="form-group">
-        <label for="quantity">Opis</label>
+      <div class="form-group mt-3">
+        <label for="description">Opis</label>
         <input type="text" class="form-control" id="description" aria-describedby="emailHelp" placeholder="Unesi opis" 
-        required name=description [(ngModel)]="addUser_VehicleRequest.description" #description="ngModel">   
-       
-
-      
+         name=description [(ngModel)]="addUser_VehicleRequest.description" #description="ngModel" maxlength="200">   
+      </div>
+     
      
         
     
         <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
   
 
-  
+  </form>
   </div>

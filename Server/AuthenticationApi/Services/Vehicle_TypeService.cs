@@ -2,6 +2,9 @@
 using AuthenticationApi.Dtos;
 using AuthenticationApi.Entities;
 using AutoMapper;
+using FluentResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace AuthenticationApi.Services
@@ -23,11 +26,23 @@ namespace AuthenticationApi.Services
                                        .ToList();
         }
 
-        public void CreateVehicle_Types(Vehicle_TypeCreation model)
-        {
-            var vehicles = _mapper.Map<Vehicle_Type>(model);
-            Create(vehicles);
-            _appdbcontext.SaveChanges();
+        public async Task<Result<string>> CreateVehicle_Types(Vehicle_TypeCreation model)
+        
+{
+    var existingVehicleType = _appdbcontext.Vehicle_Types.FirstOrDefault(x => x.vehicle_typename == model.vehicle_typename);
+            if (existingVehicleType != null)
+            {
+                return Result.Fail("Vozilo već postoji u bazi podataka.");
+            }
+            else
+            {
+                var vehicles = _mapper.Map<Vehicle_Type>(model);
+                Create(vehicles);
+                _appdbcontext.SaveChanges();
+                return Result.Ok();
+            }
+
+
         }
 
         public void DeleteVehicle_Types(int id)

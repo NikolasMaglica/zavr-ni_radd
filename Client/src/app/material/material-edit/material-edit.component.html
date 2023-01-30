@@ -11,9 +11,7 @@
         <li class="nav-item">
           <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Products</a>
-        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Vozilo
@@ -39,6 +37,17 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Usluge
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+
+            <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Material
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -50,12 +59,22 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Korisnikovo vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ponude
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
             <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
-            <li><a class="dropdown-item" href="#">Contact us</a></li>
           </ul>
         </li>
         <li class="nav-item flare">
@@ -73,64 +92,68 @@
    form #form="ngForm"
     (ngSubmit)="updateVehicle_Type(addMaterialRequest.id)">
         
-      
-      <div class="form-group">
-        <label for="name">Naziv materijala</label>
-        <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Unesi naziv materijala" 
-        required name=name [(ngModel)]="addMaterialRequest.name" #name="ngModel">   
-        <div *ngIf="name.invalid && (name.dirty || name.touched)"
-       >
-    
-      <div *ngIf="name.errors?.['required']" class="alert alert-primary" role="alert">
-        Unos naziva materijala je <strong>obavezan</strong>.
-      </div>
-      
-
-      </div> 
-      <div class="form-group">
-        <label for="instockquantity">Količina materijala na lageru</label>
-        <input type="number" class="form-control" id="instockquantity" aria-describedby="emailHelp" placeholder="Unesi količinu materijala na lageru" 
-        required name=instockquantity [(ngModel)]="addMaterialRequest.instockquantity" #instockquantity="ngModel">   
-        <div *ngIf="instockquantity.invalid && (instockquantity.dirty || instockquantity.touched)"
-       >
-    
-      <div *ngIf="instockquantity.errors?.['required']" class="alert alert-primary" role="alert">
-        Unos količine na lageru je <strong>obavezan</strong>.
-      </div>
-      
-
-      </div> 
-      <div class="form-group">
-        <label for="price">Cijena materijala</label>
-        <input type="number" class="form-control" id="price" aria-describedby="emailHelp" placeholder="Unesi cijenu materijala" 
-        required name=price [(ngModel)]="addMaterialRequest.price" #price="ngModel">   
-        <div *ngIf="price.invalid && (price.dirty || price.touched)"
-       >
-    
-      <div *ngIf="price.errors?.['required']" class="alert alert-primary" role="alert">
-       Unos cijene materijala je <strong>obavezan</strong>.
-      </div>
-      
-
-      </div> 
-      <div class="form-group">
-        <label for="description">Opis materijala</label>
-        <input type="text" class="form-control" id="description" aria-describedby="emailHelp" placeholder="Unesi opis materijala "
-        required name=description [(ngModel)]="addMaterialRequest.description" #description="ngModel">   
-        <div *ngIf="description.invalid && (description.dirty || description.touched)"
-       >
-    
-      <div *ngIf="description.errors?.['required']" class="alert alert-primary" role="alert">
-       Unos vrste materijala je <strong>obavezan</strong>.
-      </div>
-      
-
-      </div> 
-     
         
-    
-      <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
+    <div class="form-group mt-3">
+      <label for="name">Naziv materijala</label>
+      <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Unesi naziv materijala" 
+      required name=name [(ngModel)]="addMaterialRequest.name" #name="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="30">   
+      <div *ngIf="name.invalid && (name.dirty || name.touched)"
+     >
   
+    <div *ngIf="name.errors?.['required']" class="alert alert-primary" role="alert">
+      Unos naziva materijala je <strong>obavezan</strong>.
+    </div>
+    <div *ngIf="name.errors?.['pattern']" class="alert alert-primary" role="alert">
+     Možete unijeti samo slova <strong>obavezan</strong>.
+    </div>
+  </div> 
 
+    </div> 
+    <div class="form-group mt-3">
+      <label for="instockquantity">Količina materijala na lageru</label>
+      <input type="text" class="form-control" id="instockquantity" aria-describedby="emailHelp" placeholder="Unesi količinu materijala na lageru" 
+      required name=instockquantity [(ngModel)]="addMaterialRequest.instockquantity" #instockquantity="ngModel" maxlength="6"  pattern="[0-9]*">   
+      <div *ngIf="instockquantity.invalid && (instockquantity.dirty || instockquantity.touched)"
+     >
   
-  </div>
+    <div *ngIf="instockquantity.errors?.['required']" class="alert alert-primary" role="alert">
+      Unos količine na lageru je <strong>obavezan</strong>.
+    </div>
+    <div *ngIf="instockquantity.errors?.['pattern']" class="alert alert-primary" role="alert">
+     Možete unijeti samo <strong>brojeve</strong>.
+    </div>
+  </div> 
+
+    </div> 
+    <div class="form-group mt-3">
+      <label for="price">Cijena materijala</label>
+      <input type="text" class="form-control" id="price" aria-describedby="emailHelp" placeholder="Unesi cijenu materijala" 
+      required name=price [(ngModel)]="addMaterialRequest.price" #price="ngModel" maxlength="9"  pattern="[0-9.]*">   
+      <div *ngIf="price.invalid && (price.dirty || price.touched)"
+     >
+  
+    <div *ngIf="price.errors?.['required']" class="alert alert-primary" role="alert">
+     Unos cijene materijala je <strong>obavezan</strong>.
+    </div>
+    <div *ngIf="price.errors?.['pattern']" class="alert alert-primary" role="alert">
+     Možete unijeti samo <strong>brojeve</strong>.
+     </div>
+    </div> 
+
+    </div> 
+    <div class="form-group mt-3">
+      <label for="description">Opis materijala</label>
+      <input type="text" class="form-control" id="description" aria-describedby="emailHelp" placeholder="Unesi opis materijala "
+       name=description [(ngModel)]="addMaterialRequest.description" #description="ngModel" maxlength="200">   
+     
+
+
+    </div> 
+   
+      
+  
+    <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
+
+  </form>
+
+</div>

@@ -1,8 +1,9 @@
 ﻿using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
-using AuthenticationApi.Entities;
+using AuthenticationApi.Extensions;
 using AuthenticationApi.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationApi.Controllers
@@ -27,13 +28,26 @@ namespace AuthenticationApi.Controllers
             var vehicles = _vehicle.GetAllVehicle_Types();    
             return Ok(vehicles);
         }
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult Vehicle_TypeCreate([FromBody] Vehicle_TypeCreation model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> Vehicle_TypeCreate([FromBody] Vehicle_TypeCreation model)
         {
+           var result= await _vehicle.CreateVehicle_Types(model);
+            var resultDto = result.ToResultDto();
 
-            _vehicle.CreateVehicle_Types(model);
-            return Ok(new { message = "Uspješan unos nove vrste vozila" });
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+
+    
+
         [HttpDelete]
         [Route("{id:int}")]
         public IActionResult Vehicle_TypeDelete([FromRoute] int id)

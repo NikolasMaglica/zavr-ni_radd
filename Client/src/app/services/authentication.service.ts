@@ -110,6 +110,6 @@ export class AuthenticationService {
         errorsMessage.push(validationErrorDictionary[fieldName]);
       }
     }
-    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
-  }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvor');
+     }
 }

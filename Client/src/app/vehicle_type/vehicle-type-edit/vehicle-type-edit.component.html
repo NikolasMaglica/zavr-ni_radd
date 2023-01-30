@@ -11,9 +11,7 @@
         <li class="nav-item">
           <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Products</a>
-        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Vozilo
@@ -28,12 +26,55 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Narudžba
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/order">Dodaj narudžbu</a></li>
+
+            <li><a class="dropdown-item" href="/orderlist">Sve narudžbe</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Usluge
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+
+            <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Material
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/material">Dodaj materijal</a></li>
+
+            <li><a class="dropdown-item" href="/materiallist">Svi materijali</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Korisnikovo vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ponude
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
             <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
-            <li><a class="dropdown-item" href="#">Contact us</a></li>
           </ul>
         </li>
         <li class="nav-item flare">
@@ -56,18 +97,22 @@
        <div class="form-group">
          <label for="vehicle_typename">Naziv vrste vozila</label>
          <input type="text" class="form-control" id="vehicle_typename" aria-describedby="emailHelp" placeholder="Unesi naziv vrste vozila" 
-         required name=vehicle_typename [(ngModel)]="addVehicle_TypeRequest.vehicle_typename" #vehicle_typename="ngModel">   
+         required name=vehicle_typename [(ngModel)]="addVehicle_TypeRequest.vehicle_typename" #vehicle_typename="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="30">   
          <div *ngIf="vehicle_typename.invalid && (vehicle_typename.dirty || vehicle_typename.touched)"
         >
      
        <div *ngIf="vehicle_typename.errors?.['required']" class="alert alert-primary" role="alert">
          Unos vrste vozila je <strong>obavezan</strong>.
        </div>
+       <div *ngIf="vehicle_typename.errors?.['pattern']" class="alert alert-primary" role="alert">
+        Možete unijeti samo <strong>slova i brojeve</strong>.
+       </div>
       </div> 
+    </div> 
 
        <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
   
-  
+  </form>
 
     </div>
   

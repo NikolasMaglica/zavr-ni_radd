@@ -38,7 +38,7 @@ export class OrderAddComponent implements OnInit {
   logout(): void {
     this.authenticationService.logout();
   }
-  addVehicle(){
+  addOrder(){
     this.orderService.addOrder(this.addOrderRequest).subscribe({
       next:(order)=>{
         this.router.navigate(['orderlist']);

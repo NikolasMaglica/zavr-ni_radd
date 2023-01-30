@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -9,6 +9,7 @@ import { Vehicle_Type } from '../models/vehicle_type';
 })
 export class VehicleTypeService {
   baseApiUrl:string=environment.apiUrl;
+  private endpoint = 'https://jsonplaceholder.typicode.com/xyz';
 
 
   constructor(private http:HttpClient) {}
@@ -28,4 +29,5 @@ updateVehicle_Type(id:string, updateVehicle_TypeRequest:Vehicle_Type):Observable
 deleteVehicle_Type(id:string):Observable<Vehicle_Type>{
   return this.http.delete<Vehicle_Type>(this.baseApiUrl +'api/vehicle_type/'+id);
 }
+
 }

@@ -11,9 +11,7 @@
         <li class="nav-item">
           <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Products</a>
-        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Vozilo
@@ -28,12 +26,55 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Narudžba
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/order">Dodaj narudžbu</a></li>
+
+            <li><a class="dropdown-item" href="/orderlist">Sve narudžbe</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Usluge
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+
+            <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Material
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/material">Dodaj materijal</a></li>
+
+            <li><a class="dropdown-item" href="/materiallist">Svi materijali</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Korisnikovo vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ponude
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
             <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
-            <li><a class="dropdown-item" href="#">Contact us</a></li>
           </ul>
         </li>
         <li class="nav-item flare">
@@ -44,66 +85,77 @@
   </div>
 </nav>
 <div class="container my-5">
-    <h1 class="mb-3">Dodaj novo vozilo</h1>
+  <h1 class="mb-3">Dodaj novo vozilo</h1>
+
+
+  <form
+   #form="ngForm"
+  (ngSubmit)="updateVehicle(VehicleDetalils.id)">
+      
+    
+    <div class="form-group mt-3">
+      <label for="manufacturer">Proizvođač</label>
+      <input type="text" class="form-control" id="manufacturer" aria-describedby="emailHelp" placeholder="Unesi proizvođača" 
+      required name=price [(ngModel)]="VehicleDetalils.manufacturer" #manufacturer="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="30">   
+      <div *ngIf="manufacturer.invalid && (manufacturer.dirty || manufacturer.touched)"
+     >
   
+    <div *ngIf="manufacturer.errors?.['required']" class="alert alert-primary" role="alert">
+      Unos proizvođača je <strong>obavezan</strong>.
+    </div>
+    <div *ngIf="manufacturer.errors?.['pattern']" class="alert alert-primary" role="alert">
+      Možete unijeti samo <strong>slova</strong>.
+     </div>
+    </div> 
+  </div> 
+   
+    <div class="form-group mt-3">
+      <label for="model">Model vozila</label>
+      <input type="text" class="form-control" id="model" aria-describedby="emailHelp" placeholder="Unesi model vozila" 
+      required name=model [(ngModel)]="VehicleDetalils.model" #model="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="30">   
+      <div *ngIf="model.invalid && (model.dirty || model.touched)"
+     >
   
-   <form
-   form #form="ngForm"
-    (ngSubmit)="updateVehicle(VehicleDetalils.id)">
-        
-      
-      <div class="form-group">
-        <label for="manufacturer">Proizvođač</label>
-        <input type="text" class="form-control" id="manufacturer" aria-describedby="emailHelp" placeholder="Unesi proizvođača" 
-        required name=price [(ngModel)]="VehicleDetalils.manufacturer" #manufacturer="ngModel">   
-        <div *ngIf="manufacturer.invalid && (manufacturer.dirty || manufacturer.touched)"
-       >
+    <div *ngIf="manufacturer.errors?.['required']" class="alert alert-primary" role="alert">
+      Unos modela vozila je <strong>obavezan</strong>.
+    </div>
+    <div *ngIf="manufacturer.errors?.['pattern']" class="alert alert-primary" role="alert">
+     Možete unijeti samo <strong>slova i brojeve</strong>.
+    </div>
+    </div> 
+  </div> 
+   
+    <div class="form-group mt-3">
+      <label for="productionyear">Godina proizvodnje</label>
+      <input type="text" class="form-control" id="productionyear" aria-describedby="emailHelp" placeholder="Unesi godinu proizvodnje" 
+      required name=productionyear [(ngModel)]="VehicleDetalils.productionyear" #productionyear="ngModel" pattern="[0-9]*" maxlength="6">   
+      <div *ngIf="productionyear.invalid && (productionyear.dirty || productionyear.touched) "
+     >
+  
+    <div *ngIf="productionyear.errors?.['required']" class="alert alert-primary" role="alert">
+      Unos godine proizvodnje je <strong>obavezan</strong>.
+    </div>
+    <div *ngIf="productionyear.errors?.['required']" class="alert alert-primary" role="alert">
+     Možete unijeti samo <strong>brojeve</strong>.
+    </div>
     
-      <div *ngIf="manufacturer.errors?.['required']" class="alert alert-primary" role="alert">
-        Unos proizvođača je <strong>obavezan</strong>.
-      </div>
-      </div> 
-
-       
-      <div class="form-group">
-        <label for="model">Model vozila</label>
-        <input type="text" class="form-control" id="model" aria-describedby="emailHelp" placeholder="Unesi model vozila" 
-        required name=model [(ngModel)]="VehicleDetalils.model" #model="ngModel">   
-        <div *ngIf="model.invalid && (model.dirty || model.touched)"
-       >
-    
-      <div *ngIf="manufacturer.errors?.['required']" class="alert alert-primary" role="alert">
-        Unos modela vozila je <strong>obavezan</strong>.
-      </div>
-      </div> 
-      
-
-      
-      <div class="form-group">
-        <label for="productionyear">Godina proizvodnje</label>
-        <input type="text" class="form-control" id="productionyear" aria-describedby="emailHelp" placeholder="Unesi godinu proizvodnje" 
-        required name=productionyear [(ngModel)]="VehicleDetalils.productionyear" #productionyear="ngModel">   
-        <div *ngIf="productionyear.invalid && (productionyear.dirty || productionyear.touched)"
-       >
-    
-      <div *ngIf="productionyear.errors?.['required']" class="alert alert-primary" role="alert">
-        Unos godine proizvodnje je <strong>obavezan</strong>.
-      </div>
-      </div> 
-
-      <div class="form-group">
-        <label for="kilometerstraveled">Broj prijeđenih kilometara</label>
-        <input type="text" class="form-control" id="kilometerstraveled" aria-describedby="emailHelp" placeholder="Unesi broj prijeđenih kilometara" 
-        required name=kilometerstraveled [(ngModel)]="VehicleDetalils.kilometerstraveled" #kilometerstraveled="ngModel">   
-        <div *ngIf="kilometerstraveled.invalid && (kilometerstraveled.dirty || kilometerstraveled.touched)"
-       >
-    
-      <div *ngIf="productionyear.errors?.['required']" class="alert alert-primary" role="alert">
-        Unos broja prijeđenih kilometara je <strong>obavezan</strong>.
-      </div>
-      </div> 
-      
-
+    </div> 
+          </div> 
+    <div class="form-group mt-3">
+      <label for="kilometerstraveled">Broj prijeđenih kilometara</label>
+      <input type="text" class="form-control" id="kilometerstraveled" aria-describedby="emailHelp" placeholder="Unesi broj prijeđenih kilometara" 
+      required name=kilometerstraveled [(ngModel)]="VehicleDetalils.kilometerstraveled" #kilometerstraveled="ngModel" maxlength="6"  pattern="[0-9]*">   
+      <div *ngIf="kilometerstraveled.invalid && (kilometerstraveled.dirty || kilometerstraveled.touched)"
+     >
+  
+    <div *ngIf="kilometerstraveled.errors?.['required']" class="alert alert-primary" role="alert">
+      Unos broja prijeđenih kilometara je <strong>obavezan</strong>.
+    </div>
+    <div *ngIf="kilometerstraveled.errors?.['pattern']" class="alert alert-primary" role="alert">
+      Možete unijeti samo <strong>brojeve</strong>.
+    </div>
+    </div> 
+  </div> 
       <div class="form-group">
         <label for="vehicle_typeid">Vrsta vozila</label>
         <select class="form-control" name="vehicle_typeid" id="vehicle_typeid" [(ngModel)]="VehicleDetalils.vehicle_typeid" *ngIf="VehicleDetalils.vehicle_typeid!=''">
@@ -116,7 +168,8 @@
         <select class="form-control" name="clientid" id="clientid" [(ngModel)]="VehicleDetalils.clientid" *ngIf="VehicleDetalils.clientid!=''">
           <option *ngFor="let type of ClientId$|async" [value]="type.id">{{type.firstlastname}}</option>
         </select>
+      </div>
         <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
   
-
+    </form>
   </div>

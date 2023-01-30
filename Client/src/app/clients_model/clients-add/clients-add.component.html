@@ -11,9 +11,7 @@
         <li class="nav-item">
           <a class="nav-link mx-2 active" aria-current="page" href="/offerslist">Početna</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Products</a>
-        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Vozilo
@@ -28,12 +26,45 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Klijenti
+            Narudžba
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="/client">Dodaj klijenta</a></li>
+            <li><a class="dropdown-item" href="/order">Dodaj narudžbu</a></li>
 
-            <li><a class="dropdown-item" href="/clientlist">Svi klijenti</a></li>
+            <li><a class="dropdown-item" href="/orderlist">Sve narudžbe</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Usluge
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/service">Dodaj uslugu</a></li>
+
+            <li><a class="dropdown-item" href="/servicelist">Sve usluge</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Material
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/material">Dodaj materijal</a></li>
+
+            <li><a class="dropdown-item" href="/materiallist">Svi materijali</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Korisnikovo vozilo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/uservehicle">Dodaj korisnikovo vozilo</a></li>
+
+            <li><a class="dropdown-item" href="/uservehiclelist">Sva korisnkova vozila</a></li>
             
           </ul>
         </li>
@@ -44,7 +75,6 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/offerslist">Sve ponude</a></li>
             <li><a class="dropdown-item" href="/offers">Nova ponuda</a></li>
-            <li><a class="dropdown-item" href="#">Contact us</a></li>
           </ul>
         </li>
         <li class="nav-item flare">
@@ -59,40 +89,46 @@
   
   
    <form
-   form #form="ngForm"
+    #form="ngForm"
     (ngSubmit)="addClientType()">
         
       
-      <div class="form-group">
+      <div class="form-group mt-3">
         <label for="firstlastname">Ime i prezime klijenta</label>
         <input type="text" class="form-control" id="firstlastname" aria-describedby="emailHelp" placeholder="Unesi ime i prezime klijenta" 
-        required name=firstlastname [(ngModel)]="addVehicle_TypeRequest.firstlastname" #firstlastname="ngModel">   
+        required name=firstlastname [(ngModel)]="addVehicle_TypeRequest.firstlastname" #firstlastname="ngModel" pattern="^[a-zA-Z0-9 ]+$" maxlength="30">   
         <div *ngIf="firstlastname.invalid && (firstlastname.dirty || firstlastname.touched)"
        >
     
       <div *ngIf="firstlastname.errors?.['required']" class="alert alert-primary" role="alert">
         Unos imena i prezimena klijenta je <strong>obavezan</strong>.
       </div>
-      
+      <div *ngIf="firstlastname.errors?.['pattern']" class="alert alert-primary" role="alert">
+       Možete unijeti samo <strong>slova</strong>.
+      </div>
 
       </div> 
-      <div class="form-group">
-        <label for="phonenumber">Broj telefonaklijenta</label>
-        <input type="number" class="form-control" id="phonenumber" aria-describedby="emailHelp" placeholder="Unesi broj telefona klijenta" 
-        required name=phonenumber [(ngModel)]="addVehicle_TypeRequest.phonenumber" #phonenumber="ngModel">   
+    </div> 
+      <div class="form-group mt-3">
+        <label for="phonenumber">Broj telefona klijenta</label>
+        <input type="text" class="form-control" id="phonenumber" aria-describedby="emailHelp" placeholder="Unesi broj telefona klijenta" 
+        required name=phonenumber [(ngModel)]="addVehicle_TypeRequest.phonenumber" #phonenumber="ngModel" pattern="[0-9+\s]+" maxlength="20">   
         <div *ngIf="phonenumber.invalid && (phonenumber.dirty || phonenumber.touched)"
        >
     
       <div *ngIf="phonenumber.errors?.['required']" class="alert alert-primary" role="alert">
         Unos broja telefona klijenta je <strong>obavezan</strong>.
       </div>
-      
-
+      <div *ngIf="phonenumber.errors?.['pattern']" class="alert alert-primary" role="alert">
+        Možete unijeti samo <strong>brojeve</strong>.
+      </div>
       </div> 
-       <div class="form-group">
+    </div> 
+
+       <div class="form-group mt-3">
         <label for="adress">Adresa klijenta</label>
         <input type="text" class="form-control" id="adress" aria-describedby="emailHelp" placeholder="Unesi adresu klijenta" 
-        required name=adress [(ngModel)]="addVehicle_TypeRequest.adress" #adress="ngModel">   
+        required name=adress [(ngModel)]="addVehicle_TypeRequest.adress" #adress="ngModel" maxlength="40">   
         <div *ngIf="adress.invalid && (adress.dirty || adress.touched)"
        >
     
@@ -100,12 +136,13 @@
         Unos adrese klijenta je <strong>obavezan</strong>.
       </div>
       
-
       </div>  
-      <div class="form-group">
+    </div>  
+
+      <div class="form-group mt-3">
         <label for="email">Email klijenta</label>
         <input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Unesi email klijenta" 
-        required name=email [(ngModel)]="addVehicle_TypeRequest.email" #email="ngModel">   
+        required name=email [(ngModel)]="addVehicle_TypeRequest.email" #email="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" maxlength="40">   
         <div *ngIf="email.invalid && (email.dirty || email.touched)"
        >
     
@@ -113,13 +150,17 @@
         Unos emaila klijenta je <strong>obavezan</strong>.
       </div>
       
+      <div *ngIf="email.errors?.['pattern']" class="alert alert-primary" role="alert">
+       Unesite ispravan <strong>format e-maila</strong>.
+      </div>
 
       </div> 
+    </div> 
      
         
     
       <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
   
 
-  
+  </form>
   </div>
