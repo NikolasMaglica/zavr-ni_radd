@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/models/vehicle.model';
@@ -40,7 +42,7 @@ client:any=[];
   
 
   
-  constructor(private authenticationService: AuthenticationService, private clientService:ClientsService, private router:Router,private vehicleService:VehicleService, private vehicleTypeService:VehicleTypeService) { }
+  constructor(private snackBar: MatSnackBar, private authenticationService: AuthenticationService, private clientService:ClientsService, private router:Router,private vehicleService:VehicleService, private vehicleTypeService:VehicleTypeService) { }
 
   ngOnInit(): void {
     this.refreshVehicle_TypeMap();
@@ -58,12 +60,31 @@ this.vehicleService.getAllVehicles().subscribe({
   }
   delete(item:any) {
     if(confirm(`Želite li izbirsati vozilo pod rednim brojem ${item.id} ?`)) {
-      this.vehicleService.deleteVehicle(item.id).subscribe(res => {
-        
-      this.VehicleList$ = this.vehicleService.getAllVehicles();
-      })
+      this.vehicleService.deleteVehicle(item.id).subscribe(
+        (result) => {     
+          this.VehicleList$=this.vehicleService.getAllVehicles();
+            this.snackBar.open('Uspješno ste izbrisali vozilo', 'Zatvori');
+            this.router.navigate(['vehiclelist']);
+        },
+        (error: HttpErrorResponse) => {
+                 this.handleFailedAuthentication(error);
+
+        }
+    );
+    }
+  
+}
+private handleFailedAuthentication(error: HttpErrorResponse): void {
+  let errorsMessage = [];
+
+  let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+  for (let fieldName in validationErrorDictionary) {
+    if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+      errorsMessage.push(validationErrorDictionary[fieldName]);
     }
   }
+  this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
+}
   refreshVehicle_TypeMap() {
     this.vehicleTypeService.getAllVehicle_Types().subscribe(data => {
       this.vehicle_typeList = data;

@@ -46,30 +46,53 @@ namespace AuthenticationApi.Controllers
             return Ok(resultDto);
         }
 
-    
-
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult Vehicle_TypeDelete([FromRoute] int id)
+        [AllowAnonymous]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+
+        public async Task<IActionResult> Vehicle_TypeDelete([FromRoute] int id)
         {
-            _vehicle.DeleteVehicle_Types(id);
-            return Ok(new { message = "Uspješan ste izbrisali vrstu vozila" });
+            var result = await _vehicle.DeleteVehicle_Types(id);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-
         public IActionResult GetVehicle_Type([FromRoute] int id)
         {
             var vehicles = _appDbContext.Vehicle_Types?.FirstOrDefault(x => x.id == id);
             return Ok(vehicles);
         }
+
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult UpdateVehicle_Type(int id, [FromBody] Vehicle_TypeUpdate model)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> UpdateVehicle_Type(int id, [FromBody] Vehicle_TypeUpdate model)
         {
-            _vehicle.UpdateVehicle_Types(id, model);
-            return Ok(new { message = "Podaci o vrsti vozila  su ažurirani" });
+            var result = await _vehicle.UpdateVehicle_Types(id, model);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+
     }
 }

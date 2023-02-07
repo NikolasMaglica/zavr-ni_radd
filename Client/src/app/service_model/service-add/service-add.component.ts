@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Service } from 'src/app/models/service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -17,7 +19,7 @@ export class ServiceAddComponent implements OnInit {
     price:0,
     description:''
   }
-  constructor(private authenticationService:AuthenticationService, private serviceType:ServiceService, private router:Router) { }
+  constructor(private snackBar: MatSnackBar, private authenticationService:AuthenticationService, private serviceType:ServiceService, private router:Router) { }
 
   ngOnInit(): void {
   
@@ -27,9 +29,26 @@ export class ServiceAddComponent implements OnInit {
     this.authenticationService.logout();
   }
   addServiceType(){
-    this.serviceType.addServices(this.addServiceRequest).subscribe({
-      next:(services)=>{
-        this.router.navigate(['servicelist']);
+    this.serviceType.addServices(this.addServiceRequest).subscribe(
+      (result) => {     
+          this.snackBar.open('Uspješan unos', 'Zatvori');
+          this.router.navigate(['servicelist']);
+      },
+      (error: HttpErrorResponse) => {
+               this.handleFailedAuthentication(error);
+
       }
-    })  }
+  );
+  }
+  private handleFailedAuthentication(error: HttpErrorResponse): void {
+    let errorsMessage = [];
+
+    let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+    for (let fieldName in validationErrorDictionary) {
+      if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+        errorsMessage.push(validationErrorDictionary[fieldName]);
+      }
+    }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
+  }
 }

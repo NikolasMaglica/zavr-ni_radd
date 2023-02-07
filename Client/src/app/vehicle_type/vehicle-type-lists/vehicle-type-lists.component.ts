@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle_Type } from 'src/app/models/vehicle_type';
@@ -23,7 +25,7 @@ userList:any=[];
  
    
   
-  constructor(private authenticationService:AuthenticationService, private vehicleType:VehicleTypeService, private router:Router) { }
+  constructor(private snackBar: MatSnackBar, private authenticationService:AuthenticationService, private vehicleType:VehicleTypeService, private router:Router) { }
 
   ngOnInit(): void {
     this.vehicle_Type$=this.vehicleType.getAllVehicle_Types();
@@ -38,14 +40,33 @@ this.vehicleType.getAllVehicle_Types().subscribe({
   }
   delete(item:any) {
     if(confirm(`Želite li izbirsati vrstu vozila pod rednim brojem ${item.id} ?`)) {
-      this.vehicleType.deleteVehicle_Type(item.id).subscribe(res => {
-        
-      this.vehicle_Type$ = this.vehicleType.getAllVehicle_Types();
-      })
+      this.vehicleType.deleteVehicle_Type(item.id) .subscribe(
+        (result) => {     
+          this.vehicle_Type$=this.vehicleType.getAllVehicle_Types();
+            this.snackBar.open('Uspješno ste izbrisali vrstu vozila', 'Zatvori');
+            this.router.navigate(['vehicle_typelist']);
+        },
+        (error: HttpErrorResponse) => {
+                 this.handleFailedAuthentication(error);
+
+        }
+    );
     }
-  }
+  
+}
    logout(): void {
       this.authenticationService.logout();
+    }
+    private handleFailedAuthentication(error: HttpErrorResponse): void {
+      let errorsMessage = [];
+  
+      let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+      for (let fieldName in validationErrorDictionary) {
+        if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+          errorsMessage.push(validationErrorDictionary[fieldName]);
+        }
+      }
+      this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
     }
 
 }

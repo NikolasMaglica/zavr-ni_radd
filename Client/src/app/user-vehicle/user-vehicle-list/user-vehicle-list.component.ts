@@ -1,4 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User_Vehicle } from 'src/app/models/user_vehicle';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -29,7 +32,7 @@ export class UserVehicleListComponent implements OnInit {
   vehicleList:any=[];
 
 
-  constructor(private vehicleService:VehicleService, private userService:UsersService,private authenticationService:AuthenticationService, private uservehicleService:UserVehicleService) { }
+  constructor(private snackBar: MatSnackBar,private route:ActivatedRoute, private vehicleService:VehicleService, private userService:UsersService,private authenticationService:AuthenticationService, private uservehicleService:UserVehicleService, private router:Router) { }
   ngOnInit(): void {
     this.refreshUserMap();
     this.refreshVehicleMap();
@@ -47,12 +50,20 @@ this.uservehicleService.getAllUser_Vehicle().subscribe({
   }
   delete(item:any) {
     if(confirm(`Želite li izbrisati zaposlenikovo vozila pod rednim brojem ${item.id} ?`)) {
-      this.uservehicleService.deleteUser_Vehicle(item.id).subscribe(res => {
-        
-      this.User_Vehicle$ = this.uservehicleService.getAllUser_Vehicle();
-      })
+      this.uservehicleService.deleteUser_Vehicle(item.id).subscribe(
+        (result) => {     
+          this.User_Vehicle$=this.uservehicleService.getAllUser_Vehicle();
+            this.snackBar.open('Uspješno ste izbrisali vrstu vozila', 'Zatvori');
+            this.router.navigate(['uservehiclelist']);
+        },
+        (error: HttpErrorResponse) => {
+                 this.handleFailedAuthentication(error);
+
+        }
+    );
     }
-  }
+  
+}
   logout(): void {
     this.authenticationService.logout();
   }
@@ -65,6 +76,17 @@ this.uservehicleService.getAllUser_Vehicle().subscribe({
         this.UserTypesMap.set(this.userList[i].id, this.userList[i].userName);
       }
     })
+  }
+  private handleFailedAuthentication(error: HttpErrorResponse): void {
+    let errorsMessage = [];
+
+    let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+    for (let fieldName in validationErrorDictionary) {
+      if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+        errorsMessage.push(validationErrorDictionary[fieldName]);
+      }
+    }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
   }
   refreshVehicleMap() {
     this.vehicleService.getAllVehicles().subscribe(data => {

@@ -1,14 +1,19 @@
 ﻿using AuthenticationApi.Dtos;
 using AuthenticationApi.Entities;
-
+using FluentResults;
 
 namespace AuthenticationApi.Services
 {
     public interface IOffer
     {
-        IEnumerable<Offer> GetAllOffers();
-        void OfferCreate(OfferCreation model);
-        void DeleteOffer(int id);
-        void UpdateOffer(int id, OfferUpdate model);
+       
+        public IEnumerable<Offer> GetAllOffers();
+        Task<Result<string>> OfferCreate(OfferCreation model);
+
+        Task<Result<string>> DeleteOffer(int id);
+        Task<Result<string>> UpdateOffer(int id, OfferUpdate model);
+      
+
+
     }
 }

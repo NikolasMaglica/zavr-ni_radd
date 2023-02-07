@@ -3,8 +3,8 @@ using AuthenticationApi.Dtos;
 using AuthenticationApi.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
+using AuthenticationApi.Extensions;
 
 namespace AuthenticationApi.Controllers
 {
@@ -30,21 +30,44 @@ namespace AuthenticationApi.Controllers
             var offers = _offer.GetAllOffers();
             return Ok(offers);
         }
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult OfferCreate([FromBody] OfferCreation model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> OfferCreate([FromBody] OfferCreation model)
         {
+            var result = await _offer.OfferCreate(model);
+            var resultDto = result.ToResultDto();
 
-            _offer.OfferCreate(model);
-            return Ok(new { message = "Uspješan unos nove ponude" });
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+       
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult OfferDelete([FromRoute] int id)
-        {
-            _offer.DeleteOffer(id);
-            return Ok(new { message = "Uspješan ste izbrisali ponudu" });
-        }
+        [AllowAnonymous]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
 
+        public async Task<IActionResult> OfferDelete([FromRoute] int id)
+        {
+            var result = await _offer.DeleteOffer(id);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
+        }
         [HttpGet]
         [Route("{id:int}")]
 
@@ -59,10 +82,22 @@ namespace AuthenticationApi.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult UpdateOffer(int id, [FromBody] OfferUpdate model)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> UpdateOffer(int id, [FromBody] OfferUpdate model)
         {
-            _offer.UpdateOffer(id, model);
-            return Ok(new { message = "Podaci o ponudi  su ažurirani" });
+            var result = await _offer.UpdateOffer(id, model);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+
     }
 }

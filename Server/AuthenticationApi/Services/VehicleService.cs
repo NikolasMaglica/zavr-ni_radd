@@ -2,6 +2,7 @@
 using AuthenticationApi.Dtos;
 using AuthenticationApi.Entities;
 using AutoMapper;
+using FluentResults;
 
 namespace AuthenticationApi.Services
 {
@@ -15,38 +16,98 @@ namespace AuthenticationApi.Services
             _mapper = mapper;
         }
 
-        public void CreateVehicle(VehicleCreation model)
+       
+        public async Task<Result<string>> CreateVehicle(VehicleCreation model)
+
         {
-            var vehicles = _mapper.Map<Vehicle>(model);
-            Create(vehicles);
-            _appdbcontext.SaveChanges();
+            try
+            {                
+                    var vehicles = _mapper.Map<Vehicle>(model);
+                    Create(vehicles);
+                    _appdbcontext.SaveChanges();
+                    return Result.Ok();
+                
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("Greška: " + ex.Message);
+            }
+
+
+
         }
 
-        public void DeleteVehicle(int id)
+        public async Task<Result<string>> DeleteVehicle(int id)
         {
-            var vehicles = _appDbContext.Vehicles.Find(id);
-            if (vehicles == null)
-                throw new KeyNotFoundException($"Vozilo s {id} nije pronađeno u bazi podataka");
-            Delete(vehicles);
-            _appDbContext.SaveChanges();
-        }
+            try
+            {
+                var vehicles = _appDbContext.Vehicles.Find(id);
+                if (vehicles == null)
+                {
+                    throw new KeyNotFoundException($"Vozilo s id={id} nije pronađena");
+                }
 
+
+                var offers = _appDbContext.Offers.Where(o => o.vehicleid == id);
+                var user_vehicle = _appDbContext.User_Vehicle.Where(o => o.vehicleid == id);
+
+                if (offers.Any() || user_vehicle.Any())
+                {
+                    throw new InvalidOperationException("Zapis je povezan s drugim zapisom");
+                }
+
+                else
+                {
+
+                    Delete(vehicles);
+                    _appDbContext.SaveChanges();
+                    return Result.Ok();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("Greška: " + ex.Message);
+            }
+        }
         public IEnumerable<Vehicle> GetAllVehicle()
         {
-            return FindAll()
-                                                  .OrderBy(ow => ow.manufacturer)
-                                                  .ToList();
+            try
+            {
+                return FindAll()
+                                                      .OrderBy(ow => ow.id);
+           }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška: " + ex.Message);
+            }
         }
 
-        public void UpdateVehicle(int id, VehicleUpdate model)
+        public async Task<Result<string>> UpdateVehicle(int id, VehicleUpdate model)
+
         {
-            var vehicles = _appdbcontext.Vehicles?.Find(id);
-            if (vehicles == null)
-                throw new KeyNotFoundException($"Vozilo s {id} nije pronađeno u bazi podataka");
-            vehicles.manufacturer = model.manufacturer;
-            _mapper.Map(model, vehicles);
-            Update(vehicles);
-            _appdbcontext.SaveChanges();
+            try
+            {
+                var vehicles = _appdbcontext.Vehicles?.Find(id);
+                if (vehicles == null)
+                    throw new KeyNotFoundException($"Vozilo s {id} nije pronađena u bazi podataka");
+                
+                var relatedRecords = _appdbcontext.User_Vehicle.Where(x => x.vehicleid == id);
+                var relatedRecord_Offer = _appdbcontext.Offers.Where(x => x.vehicleid == id);
+
+                if (relatedRecords.Any()||relatedRecord_Offer.Any())
+                    throw new Exception("Vrsta vozila je povezana sa drugom tablicom i ne može se ažurirati");
+                vehicles.manufacturer = model.manufacturer;
+                _mapper.Map(model, vehicles);
+                Update(vehicles);
+                _appdbcontext.SaveChanges();
+                return Result.Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("Greška: " + ex.Message);
+            }
         }
     }
 }

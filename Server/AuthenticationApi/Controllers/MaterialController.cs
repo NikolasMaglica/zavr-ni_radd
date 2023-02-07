@@ -1,7 +1,10 @@
 ﻿using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
+using AuthenticationApi.Entities;
+using AuthenticationApi.Extensions;
 using AuthenticationApi.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,19 +32,43 @@ namespace AuthenticationApi.Controllers
             var material = _material.GetAllMaterial();
             return Ok(material);
         }
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult MaterialCreate([FromBody] MaterialCreation model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> MaterialCreate([FromBody] MaterialCreation model)
         {
+            var result = await _material.CreateMaterial(model);
+            var resultDto = result.ToResultDto();
 
-            _material.CreateMaterial(model);
-            return Ok(new { message = "Uspješan unos novog materijala" });
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult MaterialDelete([FromRoute] int id)
+        [AllowAnonymous]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+
+        public async Task<IActionResult> MaterialDelete([FromRoute] int id)
         {
-            _material.DeleteMaterial(id);
-            return Ok(new { message = "Uspješan ste izbrisali materijal" });
+            var result = await _material.DeleteMaterial(id);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
 
         [HttpGet]
@@ -52,12 +79,24 @@ namespace AuthenticationApi.Controllers
             var material = _appDbContext.Materials?.FirstOrDefault(x => x.id == id);
             return Ok(material);
         }
+     
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult UpdateClient(int id, [FromBody] MaterialUpdate model)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> UpdateClient(int id, [FromBody] MaterialUpdate model)
         {
-            _material.UpdateMaterial(id, model);
-            return Ok(new { message = "Podaci o klijentu  su ažurirani" });
+            var result = await _material.UpdateMaterial(id, model);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
     }
 }

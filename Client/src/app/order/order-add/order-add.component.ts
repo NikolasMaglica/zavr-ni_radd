@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Order } from 'src/app/models/order.model';
@@ -26,7 +28,7 @@ export class OrderAddComponent implements OnInit {
     materialid:'',
     order_statusid:''
   }
-  constructor(private order_statusService:OrderStatusService, private materialService:MaterialService, private orderService:OrderService, private authenticationService:AuthenticationService, private router:Router) { }
+  constructor(private snackBar: MatSnackBar,private order_statusService:OrderStatusService, private materialService:MaterialService, private orderService:OrderService, private authenticationService:AuthenticationService, private router:Router) { }
 
   ngOnInit(): void {
     this.MaterialId$=this.materialService.getAllMaterial();
@@ -39,10 +41,27 @@ export class OrderAddComponent implements OnInit {
     this.authenticationService.logout();
   }
   addOrder(){
-    this.orderService.addOrder(this.addOrderRequest).subscribe({
-      next:(order)=>{
-        this.router.navigate(['orderlist']);
+    this.orderService.addOrder(this.addOrderRequest).subscribe(
+      (result) => {     
+          this.snackBar.open('Uspješan unos', 'Zatvori');
+          this.router.navigate(['orderlist']);
+      },
+      (error: HttpErrorResponse) => {
+               this.handleFailedAuthentication(error);
+
       }
-    })  }
+  );
+  }
+  private handleFailedAuthentication(error: HttpErrorResponse): void {
+    let errorsMessage = [];
+
+    let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+    for (let fieldName in validationErrorDictionary) {
+      if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+        errorsMessage.push(validationErrorDictionary[fieldName]);
+      }
+    }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
+  }
 
 }

@@ -1,7 +1,10 @@
 ﻿using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
+using AuthenticationApi.Entities;
+using AuthenticationApi.Extensions;
 using AuthenticationApi.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,19 +32,44 @@ namespace AuthenticationApi.Controllers
             var client = _client.GetAllClients();
             return Ok(client);
         }
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult ClientCreate([FromBody] ClientCreation model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> ClientCreate([FromBody] ClientCreation model)
         {
+            var result = await _client.ClientCreate(model);
+            var resultDto = result.ToResultDto();
 
-            _client.ClientCreate(model);
-            return Ok(new { message = "Uspješan unos novog klijenta" });
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+
+
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult ClientDelete([FromRoute] int id)
+        [AllowAnonymous]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+
+        public async Task<IActionResult> ClientDelete([FromRoute] int id)
         {
-            _client.DeleteClient(id);
-            return Ok(new { message = "Uspješan ste izbrisali klijenta" });
+            var result = await _client.DeleteClient(id);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
 
         [HttpGet]
@@ -54,10 +82,21 @@ namespace AuthenticationApi.Controllers
         }
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult UpdateClient(int id, [FromBody] ClientUpdate model)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+         public async Task<IActionResult> UpdateClient(int id, [FromBody] ClientUpdate model)
         {
-            _client.UpdateClient(id, model);
-            return Ok(new { message = "Podaci o klijentu  su ažurirani" });
+            var result = await _client.UpdateClient(id, model);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
     }
 }

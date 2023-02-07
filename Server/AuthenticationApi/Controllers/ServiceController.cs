@@ -1,7 +1,10 @@
 ﻿using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
+using AuthenticationApi.Entities;
+using AuthenticationApi.Extensions;
 using AuthenticationApi.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,20 +30,45 @@ namespace AuthenticationApi.Controllers
         var services = _service.GetAllServices();
         return Ok(services);
     }
-    [HttpPost]
-    public IActionResult ServiceCreate([FromBody] ServiceCreation model)
-    {
+  
+        [AllowAnonymous]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> ServiceCreate([FromBody] ServiceCreation model)
+        {
+            var result = await _service.ServiceCreate(model);
+            var resultDto = result.ToResultDto();
 
-        _service.ServiceCreate(model);
-        return Ok(new { message = "Uspješan unos nove usluge" });
-    }
-    [HttpDelete]
-    [Route("{id:int}")]
-    public IActionResult ServiceDelete([FromRoute] int id)
-    {
-        _service.DeleteService(id);
-        return Ok(new { message = "Uspješan ste izbrisali uslugu" });
-    }
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        [AllowAnonymous]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+
+        public async Task<IActionResult> ServiceDelete([FromRoute] int id)
+        {
+            var result = await _service.DeleteService(id);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
+        }
 
     [HttpGet]
     [Route("{id:int}")]
@@ -50,13 +78,26 @@ namespace AuthenticationApi.Controllers
         var services = _appDbContext.Services?.FirstOrDefault(x => x.id == id);
         return Ok(services);
     }
-    [HttpPut]
-    [Route("{id:int}")]
-    public IActionResult UpdateService(int id, [FromBody] ServiceUpdate model)
-    {
-        _service.UpdateService(id,model);
-        return Ok(new { message = "Podaci o usluzi  su ažurirani" });
-    }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> UpdateService(int id, [FromBody] ServiceUpdate model)
+        {
+            var result = await _service.UpdateService(id, model);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
+        }
+
 }
 }
 

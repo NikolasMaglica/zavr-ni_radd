@@ -21,48 +21,102 @@ namespace AuthenticationApi.Services
 
         public IEnumerable<Vehicle_Type> GetAllVehicle_Types()
         {
-            return FindAll()
-                                       .OrderBy(ow => ow.vehicle_typename)
-                                       .ToList();
+            try
+            {
+                return FindAll()
+                                           .OrderBy(ow => ow.id)
+                                           .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Greška: " + ex.Message);
+            }
         }
 
         public async Task<Result<string>> CreateVehicle_Types(Vehicle_TypeCreation model)
         
-{
-    var existingVehicleType = _appdbcontext.Vehicle_Types.FirstOrDefault(x => x.vehicle_typename == model.vehicle_typename);
-            if (existingVehicleType != null)
+         {
+            try
             {
-                return Result.Fail("Vozilo već postoji u bazi podataka.");
+                var existingVehicleType = _appdbcontext.Vehicle_Types.FirstOrDefault(x => x.vehicle_typename == model.vehicle_typename);
+                if (existingVehicleType != null)
+                {
+                    throw new Exception("Naziv vrste vozila je unesen");
+                }
+                else
+                {
+                    var vehicles = _mapper.Map<Vehicle_Type>(model);
+                    Create(vehicles);
+                    _appdbcontext.SaveChanges();
+                    return Result.Ok();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var vehicles = _mapper.Map<Vehicle_Type>(model);
-                Create(vehicles);
+                return Result.Fail("Greška: "+ex.Message);
+            }
+
+
+
+        }
+
+        public async Task<Result<string>> DeleteVehicle_Types(int id)
+        {
+            try
+            {
+                var vehicles = _appDbContext.Vehicle_Types.Find(id);
+                if (vehicles == null)
+                {
+                    throw new KeyNotFoundException($"Vrsta vozila s id={id} nije pronađena");
+                }
+         
+                
+                    var offers = _appDbContext.Offers.Where(o => o.vehicleid == id);
+                if (offers.Any())
+                {
+                    throw new InvalidOperationException("Zapis je povezan s drugim zapisom");
+                }
+
+                else
+                {
+
+                    Delete(vehicles);
+                    _appDbContext.SaveChanges();
+                    return Result.Ok();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail("Greška: " + ex.Message);
+            }
+        }
+         
+      public async Task<Result<string>> UpdateVehicle_Types(int id, Vehicle_TypeUpdate model)
+
+        {
+            try
+            {
+                var vehicles = _appdbcontext.Vehicle_Types?.Find(id);
+                if (vehicles == null)
+                    throw new KeyNotFoundException($"Vrsta vozila s {id} nije pronađena u bazi podataka");
+                var existingVehicleType = _appdbcontext.Vehicle_Types.FirstOrDefault(x => x.vehicle_typename == model.vehicle_typename);
+                if (existingVehicleType != null && existingVehicleType.id != id)
+                    throw new Exception("Vrsta vozila s tim imenom već postoji u bazi podataka");
+                var relatedRecords = _appdbcontext.Vehicles.Where(x => x.vehicle_typeid == id);
+                if (relatedRecords.Any())
+                    throw new Exception("Vrsta vozila je povezana sa drugom tablicom i ne može se ažurirati");
+                vehicles.vehicle_typename = model.vehicle_typename;
+                _mapper.Map(model, vehicles);
+                Update(vehicles);
                 _appdbcontext.SaveChanges();
-                return Result.Ok();
+                                    return Result.Ok();
+
             }
-
-
-        }
-
-        public void DeleteVehicle_Types(int id)
-        {
-            var vehicles = _appDbContext.Vehicle_Types.Find(id);
-            if (vehicles == null)
-                throw new KeyNotFoundException($"Vrsta vozila s {id} nije pronađeno u bazi podataka");
-            Delete(vehicles);
-            _appDbContext.SaveChanges();
-        }
-
-        public void UpdateVehicle_Types(int id, Vehicle_TypeUpdate model)
-        {
-            var vehicles = _appdbcontext.Vehicle_Types?.Find(id);
-            if (vehicles == null)
-                throw new KeyNotFoundException($"Vrsta vozila s {id} nije pronađena u bazi podataka");
-            vehicles.vehicle_typename = model.vehicle_typename;
-            _mapper.Map(model, vehicles);
-            Update(vehicles);
-            _appdbcontext.SaveChanges();
+            catch (Exception ex)
+            {
+                return Result.Fail("Greška: " + ex.Message);
+            }
         }
     }
 }

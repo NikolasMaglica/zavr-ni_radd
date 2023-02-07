@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Offer } from 'src/app/models/offer.model';
@@ -51,18 +53,17 @@ servicequantity:0,
    serviceid:''
   }
  
-  constructor(private serviceType:ServiceService, private materialType:MaterialService, private authenticationService:AuthenticationService, private offer_statusType:OfferStatusService, private vehicleService:VehicleService,private router:Router,private offerService:OffersService, private userService:UsersService, private clientService:ClientsService) { }
+  constructor(private snackBar: MatSnackBar, private serviceType:ServiceService, private materialType:MaterialService, private authenticationService:AuthenticationService, private offer_statusType:OfferStatusService, private vehicleService:VehicleService,private router:Router,private offerService:OffersService, private userService:UsersService, private clientService:ClientsService) { }
 
   ngOnInit(): void {
     this.refreshVehicleMap();
     this.refreshMaterialMap();
     this.refreshServiceMap();
-
-  this.refreshUClientMap();
+    this.refreshUClientMap();
     this.refreshUserMap();
     this.refreshOffer_StatusMap() ;
     this.offerList$=this.offerService.getAllOffers();
-this.offerService.getAllOffers().subscribe({
+    this.offerService.getAllOffers().subscribe({
   next:(offers)=>{
     this.offers=offers;
   },
@@ -73,12 +74,20 @@ this.offerService.getAllOffers().subscribe({
   }
   delete(item:any) {
     if(confirm(`Želite li izbirsati ponudu pod rednim brojem ${item.id} ?`)) {
-      this.offerService.deleteOffer(item.id).subscribe(res => {
-        
-      this.offerList$ = this.offerService.getAllOffers();
-      })
+      this.offerService.deleteOffer(item.id).subscribe(
+        (result) => {     
+          this.offerList$=this.offerService.getAllOffers();
+            this.snackBar.open('Uspješno ste izbrisali ponudu', 'Zatvori');
+            this.router.navigate(['offers']);
+        },
+        (error: HttpErrorResponse) => {
+                 this.handleFailedAuthentication(error);
+
+        }
+    );
     }
-  }
+  
+}
   refreshUserMap() {
     this.userService.getAllUsers().subscribe(data => {
       this.userList = data;
@@ -141,6 +150,17 @@ this.offerService.getAllOffers().subscribe({
   }
   logout(): void {
     this.authenticationService.logout();
+  }
+  private handleFailedAuthentication(error: HttpErrorResponse): void {
+    let errorsMessage = [];
+
+    let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+    for (let fieldName in validationErrorDictionary) {
+      if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+        errorsMessage.push(validationErrorDictionary[fieldName]);
+      }
+    }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
   }
  
 }

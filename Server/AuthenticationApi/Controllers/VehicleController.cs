@@ -1,8 +1,10 @@
 ﻿using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
 using AuthenticationApi.Entities;
+using AuthenticationApi.Extensions;
 using AuthenticationApi.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationApi.Controllers
@@ -27,21 +29,45 @@ namespace AuthenticationApi.Controllers
             var vehicles = _vehicle.GetAllVehicle();
             return Ok(vehicles);
         }
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult VehicleCreate([FromBody] VehicleCreation model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> VehicleCreate([FromBody] VehicleCreation model)
         {
+            var result = await _vehicle.CreateVehicle(model);
+            var resultDto = result.ToResultDto();
 
-            _vehicle.CreateVehicle(model);
-            return Ok(new { message = "Uspješan unos novog vozila" });
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult VehicleDelete([FromRoute] int id)
-        {
-            _vehicle.DeleteVehicle(id);
-            return Ok(new { message = "Uspješan ste izbrisali vozilo" });
-        }
+        [AllowAnonymous]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
 
+        public async Task<IActionResult> VehicleDelete([FromRoute] int id)
+        {
+            var result = await _vehicle.DeleteVehicle(id);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
+        }
+    
         [HttpGet]
         [Route("{id:int}")]
 
@@ -50,12 +76,24 @@ namespace AuthenticationApi.Controllers
             var vehicles = _appDbContext.Vehicles?.FirstOrDefault(x => x.id == id);
             return Ok(vehicles);
         }
+      
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult UpdateVehicle(int id, [FromBody] VehicleUpdate model)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] VehicleUpdate model)
         {
-            _vehicle.UpdateVehicle(id, model);
-            return Ok(new { message = "Podaci o vozilu su ažurirani" });
+            var result = await _vehicle.UpdateVehicle(id, model);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
     }
 }

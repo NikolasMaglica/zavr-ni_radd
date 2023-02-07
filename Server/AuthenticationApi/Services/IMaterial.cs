@@ -1,13 +1,16 @@
 ﻿using AuthenticationApi.Dtos;
 using AuthenticationApi.Entities;
+using FluentResults;
 
 namespace AuthenticationApi.Services
 {
     public interface IMaterial
     {
-        IEnumerable<Material> GetAllMaterial();
-        void CreateMaterial(MaterialCreation model);
-        void DeleteMaterial(int id);
-        void UpdateMaterial(int id, MaterialUpdate model);
+
+        public IEnumerable<Material> GetAllMaterial();
+        Task<Result<string>> CreateMaterial(MaterialCreation model);
+
+        Task<Result<string>> DeleteMaterial(int id);
+        Task<Result<string>> UpdateMaterial(int id, MaterialUpdate model);
     }
 }

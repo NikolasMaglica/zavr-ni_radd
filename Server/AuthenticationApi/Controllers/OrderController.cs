@@ -1,7 +1,10 @@
 ﻿using AuthenticationApi.Db;
 using AuthenticationApi.Dtos;
+using AuthenticationApi.Entities;
+using AuthenticationApi.Extensions;
 using AuthenticationApi.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,19 +30,44 @@ namespace AuthenticationApi.Controllers
             var orders = _order.GetAllOrder();
             return Ok(orders);
         }
+    
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult OrderCreate([FromBody] OrderCreation model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> OrderCreate([FromBody] OrderCreation model)
         {
+            var result = await _order.CreateOrder(model);
+            var resultDto = result.ToResultDto();
 
-            _order.CreateOrder(model);
-            return Ok(new { message = "Uspješan unos nove nardudžbe" });
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+     
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult OrderDelete([FromRoute] int id)
+        [AllowAnonymous]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+
+        public async Task<IActionResult> OrderDelete([FromRoute] int id)
         {
-            _order.DeleteOrder(id);
-            return Ok(new { message = "Uspješan ste izbrisali narudžbu" });
+            var result = await _order.DeleteOrder(id);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
 
         [HttpGet]
@@ -50,13 +78,26 @@ namespace AuthenticationApi.Controllers
             var orders = _appDbContext.Order?.FirstOrDefault(x => x.id == id);
             return Ok(orders);
         }
+     
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult UpdateOrder(int id, [FromBody] OrderUpdate model)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderUpdate model)
         {
-            _order.UpdateOrder(id, model);
-            return Ok(new { message = "Podaci o narudžbi su ažurirani" });
+            var result = await _order.UpdateOrder(id, model);
+            var resultDto = result.ToResultDto();
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+            return Ok(resultDto);
         }
+
     }
 }
 

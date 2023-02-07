@@ -123,15 +123,13 @@
         </div>
         </div> 
       </div> 
-
-        <div class="form-group">
-          <label for="materialid">Materijal</label>
-          <input type="text" class="form-control" name="materialid"  [(ngModel)]="addOrderRequest.materialid" *ngIf="addOrderRequest.materialid!=''" >
-          <select class="form-control" name="materialid" id="materialid" [(ngModel)]="addOrderRequest.materialid" *ngIf="addOrderRequest.materialid==''">
-            <option *ngFor="let type of MaterialId$|async" [value]="type.id">{{type.name}}</option>
-          </select>
-          
-        </div>
+      <div class="form-group">
+        <label for="materialid">Materijal</label>
+        <input type="text" class="form-control" name="materialid" [(ngModel)]="addOrderRequest.materialid" *ngIf="addOrderRequest.materialid!=''" >
+        <select class="form-control" name="materialid" id="materialid" [(ngModel)]="addOrderRequest.materialid" *ngIf="addOrderRequest.materialid==''">
+          <option *ngFor="let type of MaterialId$|async" [value]="type.id">{{type.name}}</option>
+        </select>
+      </div>
         <div class="form-group">
             <label for="materialid">Narudžba</label>
             <input type="text" class="form-control" name="order_statusid"  [(ngModel)]="addOrderRequest.order_statusid" *ngIf="addOrderRequest.order_statusid!=''" >

@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/models/vehicle.model';
@@ -26,7 +28,7 @@ export class VehicleEditComponent implements OnInit {
  vehicle_typeid:'',
  clientid:''
   }
-  constructor(private authenticationService:AuthenticationService, private clientType:ClientsService,private vehicleService:VehicleService, private router:Router, private vehicle_type:VehicleTypeService, private route: ActivatedRoute) { }
+  constructor(private snackBar: MatSnackBar, private authenticationService:AuthenticationService, private clientType:ClientsService,private vehicleService:VehicleService, private router:Router, private vehicle_type:VehicleTypeService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.Vehicle_TypeId$=this.vehicle_type.getAllVehicle_Types();
@@ -51,11 +53,28 @@ this.VehicleDetalils=response;
     this.authenticationService.logout();
   }
   updateVehicle(id:string){
-    this.vehicleService.updateVehicle(this.VehicleDetalils.id,this.VehicleDetalils).subscribe({
-      next:(response)=>{
-        this.router.navigate(['vehiclelist']);
+    this.vehicleService.updateVehicle(this.VehicleDetalils.id,this.VehicleDetalils).subscribe(
+      (result) => {     
+          this.snackBar.open('Uspješno ste izmijenili podatke', 'Zatvori');
+          this.router.navigate(['vehiclelist']);
+      },
+      (error: HttpErrorResponse) => {
+               this.handleFailedAuthentication(error);
+
       }
-    });
+
+    );
+  }
+  private handleFailedAuthentication(error: HttpErrorResponse): void {
+    let errorsMessage = [];
+
+    let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+    for (let fieldName in validationErrorDictionary) {
+      if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+        errorsMessage.push(validationErrorDictionary[fieldName]);
+      }
+    }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
   }
 
 }

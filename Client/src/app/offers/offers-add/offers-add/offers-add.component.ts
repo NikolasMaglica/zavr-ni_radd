@@ -1,5 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MyErrorStateMatcher } from 'src/app/helpers/error-state-matcher';
@@ -37,7 +39,7 @@ servicequantity:0,
    materialid:'',
    serviceid:''
   }
-  constructor(private serviceService:ServiceService, private materialService:MaterialService, private offer_statusType:OfferStatusService, private clientService:ClientsService, private offerService:OffersService, private router:Router, private userService:UsersService, private vehicleService:VehicleService,private authenticationService:AuthenticationService) { }
+  constructor(private snackBar: MatSnackBar, private serviceService:ServiceService, private materialService:MaterialService, private offer_statusType:OfferStatusService, private clientService:ClientsService, private offerService:OffersService, private router:Router, private userService:UsersService, private vehicleService:VehicleService,private authenticationService:AuthenticationService) { }
 
   ngOnInit(): void {
     this.UserTypesId$=this.userService.getAllUsers();
@@ -49,13 +51,31 @@ servicequantity:0,
   }
  
   addOffer(){
-    this.offerService.addOffer(this.addOfferRequest).subscribe({
-      next:(offer)=>{
-        this.router.navigate(['offerslist']);
+    this.offerService.addOffer(this.addOfferRequest).subscribe(
+      (result) => {     
+          this.snackBar.open('Uspješan unos', 'Zatvori');
+          this.router.navigate(['offerslist']);
+      },
+      (error: HttpErrorResponse) => {
+               this.handleFailedAuthentication(error);
+
       }
-    })  }
+  );
+  }
+
     logout(): void {
       this.authenticationService.logout();
+    }
+    private handleFailedAuthentication(error: HttpErrorResponse): void {
+      let errorsMessage = [];
+  
+      let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+      for (let fieldName in validationErrorDictionary) {
+        if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+          errorsMessage.push(validationErrorDictionary[fieldName]);
+        }
+      }
+      this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
     }
     
 }

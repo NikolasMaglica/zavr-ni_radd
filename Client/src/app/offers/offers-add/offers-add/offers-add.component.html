@@ -90,9 +90,8 @@
   
    <form
    #form="ngForm"
-    (ngSubmit)="addOffer()">
-   
-      
+    (ngSubmit)="addOffer()">   
+
       <div class="form-group">
         <label for="price">Količina materijala</label>
         <input type="text" class="form-control" id="materialquantity" maxlength="5" aria-describedby="emailHelp" placeholder="Unesi količinu materijala" required name=materialquantity [(ngModel)]="addOfferRequest.materialquantity" #material_quantity="ngModel" pattern="^[0-9]*$" maxlength="6">  
@@ -175,6 +174,7 @@
         </select>
         
       </div>
+
 
       <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Spremi</button>
 

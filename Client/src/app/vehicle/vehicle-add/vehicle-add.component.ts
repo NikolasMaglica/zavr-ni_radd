@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/models/vehicle.model';
@@ -28,7 +30,7 @@ export class VehicleAddComponent implements OnInit {
  clientid:''
     
   }
-  constructor(private authenticationService:AuthenticationService, private vehicleService:VehicleService, private router:Router, private vehicletypeService:VehicleTypeService,private clientType:ClientsService) { }
+  constructor(private snackBar: MatSnackBar, private authenticationService:AuthenticationService, private vehicleService:VehicleService, private router:Router, private vehicletypeService:VehicleTypeService,private clientType:ClientsService) { }
 
   ngOnInit(): void {
     this.Vehicle_TypeId$=this.vehicletypeService.getAllVehicle_Types();
@@ -41,10 +43,27 @@ export class VehicleAddComponent implements OnInit {
     this.authenticationService.logout();
   }
   addVehicle(){
-    this.vehicleService.addVehicle(this.addVehicleRequest).subscribe({
-      next:(vehicle)=>{
-        this.router.navigate(['vehiclelist']);
+    this.vehicleService.addVehicle(this.addVehicleRequest).subscribe(
+      (result) => {     
+          this.snackBar.open('Uspješan unos', 'Zatvori');
+          this.router.navigate(['vehiclelist']);
+      },
+      (error: HttpErrorResponse) => {
+               this.handleFailedAuthentication(error);
+
       }
-    })  }
+  );
+  }
+    private handleFailedAuthentication(error: HttpErrorResponse): void {
+      let errorsMessage = [];
+  
+      let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+      for (let fieldName in validationErrorDictionary) {
+        if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+          errorsMessage.push(validationErrorDictionary[fieldName]);
+        }
+      }
+      this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
+    }
 
 }

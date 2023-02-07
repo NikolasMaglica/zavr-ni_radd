@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Offer } from 'src/app/models/offer.model';
@@ -36,7 +38,7 @@ servicequantity:0,
    serviceid:''
   }
  
-  constructor(private offer_statusType:OfferStatusService, private materialService:MaterialService, private serviceService:ServiceService, private authenticationService:AuthenticationService, private vehicleService:VehicleService,private clientService:ClientsService, private userService:UsersService, private route: ActivatedRoute, private offerService:OffersService, private router:Router ) { }
+  constructor(private snackBar: MatSnackBar, private offer_statusType:OfferStatusService, private materialService:MaterialService, private serviceService:ServiceService, private authenticationService:AuthenticationService, private vehicleService:VehicleService,private clientService:ClientsService, private userService:UsersService, private route: ActivatedRoute, private offerService:OffersService, private router:Router ) { }
  
   ngOnInit(): void {
     this.UserTypesId$=this.userService.getAllUsers();
@@ -60,14 +62,32 @@ this.addOfferRequest=response;
     })
   }
     updateOffer(id:string){
-      this.offerService.updateOffer(this.addOfferRequest.id,this.addOfferRequest).subscribe({
-        next:(response)=>{
-          this.router.navigate(['offers']);
+      this.offerService.updateOffer(this.addOfferRequest.id,this.addOfferRequest).subscribe(
+        (result) => {     
+            this.snackBar.open('Uspješno ste izmijenili podatke', 'Zatvori');
+            this.router.navigate(['offerslist']);
+        },
+        (error: HttpErrorResponse) => {
+                 this.handleFailedAuthentication(error);
+
         }
-      });
+
+      );
     }
+
     logout(): void {
       this.authenticationService.logout();
+    }
+    private handleFailedAuthentication(error: HttpErrorResponse): void {
+      let errorsMessage = [];
+  
+      let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+      for (let fieldName in validationErrorDictionary) {
+        if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+          errorsMessage.push(validationErrorDictionary[fieldName]);
+        }
+      }
+      this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
     }
       deleteOffer(id:string){
         this.offerService.deleteOffer(id).subscribe({

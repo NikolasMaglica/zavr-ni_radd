@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User_Vehicle } from 'src/app/models/user_vehicle';
@@ -22,7 +24,7 @@ export class UserVehicleEditComponent implements OnInit {
     description:'',
 
   }
-  constructor(private route:ActivatedRoute, private vehicleService:VehicleService, private userService:UsersService, private authenticationService:AuthenticationService, private router:Router, private uservehicleService:UserVehicleService) { }
+  constructor(private snackBar: MatSnackBar, private route:ActivatedRoute, private vehicleService:VehicleService, private userService:UsersService, private authenticationService:AuthenticationService, private router:Router, private uservehicleService:UserVehicleService) { }
 
   ngOnInit(): void {
     this.UserId$=this.userService.getAllUsers();
@@ -43,11 +45,28 @@ this.addUser_VehicleRequest=response;
     })
   }
   updateUser_Vehicle(id:string){
-    this.uservehicleService.updateUser_Vehicle(this.addUser_VehicleRequest.id,this.addUser_VehicleRequest).subscribe({
-      next:(response)=>{
-        this.router.navigate(['uservehiclelist']);
+    this.uservehicleService.updateUser_Vehicle(this.addUser_VehicleRequest.id,this.addUser_VehicleRequest).subscribe(
+      (result) => {     
+          this.snackBar.open('Uspješno ste izmijenili podatke', 'Zatvori');
+          this.router.navigate(['uservehiclelist']);
+      },
+      (error: HttpErrorResponse) => {
+               this.handleFailedAuthentication(error);
+
       }
-    });
+
+    );
+  }
+  private handleFailedAuthentication(error: HttpErrorResponse): void {
+    let errorsMessage = [];
+
+    let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+    for (let fieldName in validationErrorDictionary) {
+      if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+        errorsMessage.push(validationErrorDictionary[fieldName]);
+      }
+    }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
   }
   logout(): void {
     this.authenticationService.logout();

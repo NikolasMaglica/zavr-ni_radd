@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Client } from 'src/app/models/client.model';
@@ -25,7 +27,7 @@ export class ClientListComponent implements OnInit {
  
    
   
-  constructor(private authenticationService:AuthenticationService, private clientService:ClientsService, private router:Router) { }
+  constructor(private snackBar: MatSnackBar, private authenticationService:AuthenticationService, private clientService:ClientsService, private router:Router) { }
 
   ngOnInit(): void {
     this.Clients$=this.clientService.getAllClients();
@@ -40,11 +42,30 @@ this.clientService.getAllClients().subscribe({
   }
   delete(item:any) {
     if(confirm(`Želite li izbirsati klijenta pod rednim brojem ${item.id} ?`)) {
-      this.clientService.deleteClient(item.id).subscribe(res => {
-        
-      this.Clients$ = this.clientService.getAllClients();
-      })
+      this.clientService.deleteClient(item.id).subscribe(
+        (result) => {     
+          this.Clients$=this.clientService.getAllClients();
+            this.snackBar.open('Uspješno ste izbrisali klijenta', 'Zatvori');
+            this.router.navigate(['clientlist']);
+        },
+        (error: HttpErrorResponse) => {
+                 this.handleFailedAuthentication(error);
+
+        }
+    );
     }
+  
+}
+  private handleFailedAuthentication(error: HttpErrorResponse): void {
+    let errorsMessage = [];
+
+    let validationErrorDictionary = JSON.parse(JSON.stringify(error.error.errors));
+    for (let fieldName in validationErrorDictionary) {
+      if (validationErrorDictionary.hasOwnProperty(fieldName)) {
+        errorsMessage.push(validationErrorDictionary[fieldName]);
+      }
+    }
+    this.snackBar.open(errorsMessage.join(' '), 'Zatvori');
   }
   logout(): void {
     this.authenticationService.logout();

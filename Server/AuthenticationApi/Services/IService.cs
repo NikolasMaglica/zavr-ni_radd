@@ -1,13 +1,17 @@
 ﻿using AuthenticationApi.Dtos;
 using AuthenticationApi.Entities;
+using FluentResults;
 
 namespace AuthenticationApi.Services
 {
     public interface IService
     {
-        IEnumerable<Service> GetAllServices();
-        void ServiceCreate(ServiceCreation model);
-        void DeleteService(int id);
-        void UpdateService(int id, ServiceUpdate model);
+       
+        public IEnumerable<Service> GetAllServices();
+        Task<Result<string>> ServiceCreate(ServiceCreation model);
+
+        Task<Result<string>> DeleteService(int id);
+        Task<Result<string>> UpdateService(int id, ServiceUpdate model);
+
     }
 }
